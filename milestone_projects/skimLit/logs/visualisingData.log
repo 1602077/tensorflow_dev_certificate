@@ -1,0 +1,174 @@
+Current Working Directory: ../data/PubMed_20k_RCT_numbers_replaced_with_at_sign/
+Files:
+../data/PubMed_20k_RCT_numbers_replaced_with_at_sign/dev.txt
+../data/PubMed_20k_RCT_numbers_replaced_with_at_sign/train.txt
+../data/PubMed_20k_RCT_numbers_replaced_with_at_sign/test.txt
+
+First 20 lines in 'train.txt':
+['###24293578\n', 'OBJECTIVE\tTo investigate the efficacy of @ weeks of daily low-dose oral prednisolone in improving pain , mobility , and systemic low-grade inflammation in the short term and whether the effect would be sustained at @ weeks in older adults with moderate to severe knee osteoarthritis ( OA ) .\n', 'METHODS\tA total of @ patients with primary knee OA were randomized @:@ ; @ received @ mg/day of prednisolone and @ received placebo for @ weeks .\n', 'METHODS\tOutcome measures included pain reduction and improvement in function scores and systemic inflammation markers .\n', 'METHODS\tPain was assessed using the visual analog pain scale ( @-@ mm ) .\n', 'METHODS\tSecondary outcome measures included the Western Ontario and McMaster Universities Osteoarthritis Index scores , patient global assessment ( PGA ) of the severity of knee OA , and @-min walk distance ( @MWD ) .\n', 'METHODS\tSerum levels of interleukin @ ( IL-@ ) , IL-@ , tumor necrosis factor ( TNF ) - , and high-sensitivity C-reactive protein ( hsCRP ) were measured .\n', 'RESULTS\tThere was a clinically relevant reduction in the intervention group compared to the placebo group for knee pain , physical function , PGA , and @MWD at @ weeks .\n', 'RESULTS\tThe mean difference between treatment arms ( @ % CI ) was @ ( @-@ @ ) , p < @ ; @ ( @-@ @ ) , p < @ ; @ ( @-@ @ ) , p < @ ; and @ ( @-@ @ ) , p < @ , respectively .\n', 'RESULTS\tFurther , there was a clinically relevant reduction in the serum levels of IL-@ , IL-@ , TNF - , and hsCRP at @ weeks in the intervention group when compared to the placebo group .\n', 'RESULTS\tThese differences remained significant at @ weeks .\n', 'RESULTS\tThe Outcome Measures in Rheumatology Clinical Trials-Osteoarthritis Research Society International responder rate was @ % in the intervention group and @ % in the placebo group ( p < @ ) .\n', 'CONCLUSIONS\tLow-dose oral prednisolone had both a short-term and a longer sustained effect resulting in less knee pain , better physical function , and attenuation of systemic inflammation in older patients with knee OA ( ClinicalTrials.gov identifier NCT@ ) .\n', '\n', '###24854809\n', 'BACKGROUND\tEmotional eating is associated with overeating and the development of obesity .\n', 'BACKGROUND\tYet , empirical evidence for individual ( trait ) differences in emotional eating and cognitive mechanisms that contribute to eating during sad mood remain equivocal .\n', 'OBJECTIVE\tThe aim of this study was to test if attention bias for food moderates the effect of self-reported emotional eating during sad mood ( vs neutral mood ) on actual food intake .\n', 'OBJECTIVE\tIt was expected that emotional eating is predictive of elevated attention for food and higher food intake after an experimentally induced sad mood and that attentional maintenance on food predicts food intake during a sad versus a neutral mood .\n', 'METHODS\tParticipants ( N = @ ) were randomly assigned to one of the two experimental mood induction conditions ( sad/neutral ) .\n']
+
+Number of lines in train_lines: 210040
+
+Length of train, validation, and test datasets: 180040, 30212, 30135
+
+First 10 lines in train_samples:
+[{'line_number': 0,
+  'target': 'OBJECTIVE',
+  'text': 'to investigate the efficacy of @ weeks of daily low-dose oral '
+          'prednisolone in improving pain , mobility , and systemic low-grade '
+          'inflammation in the short term and whether the effect would be '
+          'sustained at @ weeks in older adults with moderate to severe knee '
+          'osteoarthritis ( oa ) .',
+  'total_lines': 11},
+ {'line_number': 1,
+  'target': 'METHODS',
+  'text': 'a total of @ patients with primary knee oa were randomized @:@ ; @ '
+          'received @ mg/day of prednisolone and @ received placebo for @ '
+          'weeks .',
+  'total_lines': 11},
+ {'line_number': 2,
+  'target': 'METHODS',
+  'text': 'outcome measures included pain reduction and improvement in '
+          'function scores and systemic inflammation markers .',
+  'total_lines': 11},
+ {'line_number': 3,
+  'target': 'METHODS',
+  'text': 'pain was assessed using the visual analog pain scale ( @-@ mm ) .',
+  'total_lines': 11},
+ {'line_number': 4,
+  'target': 'METHODS',
+  'text': 'secondary outcome measures included the western ontario and '
+          'mcmaster universities osteoarthritis index scores , patient global '
+          'assessment ( pga ) of the severity of knee oa , and @-min walk '
+          'distance ( @mwd ) .',
+  'total_lines': 11},
+ {'line_number': 5,
+  'target': 'METHODS',
+  'text': 'serum levels of interleukin @ ( il-@ ) , il-@ , tumor necrosis '
+          'factor ( tnf ) - , and high-sensitivity c-reactive protein ( hscrp '
+          ') were measured .',
+  'total_lines': 11},
+ {'line_number': 6,
+  'target': 'RESULTS',
+  'text': 'there was a clinically relevant reduction in the intervention group '
+          'compared to the placebo group for knee pain , physical function , '
+          'pga , and @mwd at @ weeks .',
+  'total_lines': 11},
+ {'line_number': 7,
+  'target': 'RESULTS',
+  'text': 'the mean difference between treatment arms ( @ % ci ) was @ ( @-@ @ '
+          ') , p < @ ; @ ( @-@ @ ) , p < @ ; @ ( @-@ @ ) , p < @ ; and @ ( @-@ '
+          '@ ) , p < @ , respectively .',
+  'total_lines': 11},
+ {'line_number': 8,
+  'target': 'RESULTS',
+  'text': 'further , there was a clinically relevant reduction in the serum '
+          'levels of il-@ , il-@ , tnf - , and hscrp at @ weeks in the '
+          'intervention group when compared to the placebo group .',
+  'total_lines': 11},
+ {'line_number': 9,
+  'target': 'RESULTS',
+  'text': 'these differences remained significant at @ weeks .',
+  'total_lines': 11}]
+
+Train datset pandas dataframe head:
+         target                                               text  line_number  total_lines
+0     OBJECTIVE  to investigate the efficacy of @ weeks of dail...            0           11
+1       METHODS  a total of @ patients with primary knee oa wer...            1           11
+2       METHODS  outcome measures included pain reduction and i...            2           11
+3       METHODS  pain was assessed using the visual analog pain...            3           11
+4       METHODS  secondary outcome measures included the wester...            4           11
+5       METHODS  serum levels of interleukin @ ( il-@ ) , il-@ ...            5           11
+6       RESULTS  there was a clinically relevant reduction in t...            6           11
+7       RESULTS  the mean difference between treatment arms ( @...            7           11
+8       RESULTS  further , there was a clinically relevant redu...            8           11
+9       RESULTS  these differences remained significant at @ we...            9           11
+10      RESULTS  the outcome measures in rheumatology clinical ...           10           11
+11  CONCLUSIONS  low-dose oral prednisolone had both a short-te...           11           11
+12   BACKGROUND  emotional eating is associated with overeating...            0           10
+13   BACKGROUND  yet , empirical evidence for individual ( trai...            1           10
+
+Distribution of labels in training data:
+METHODS        59353
+RESULTS        57953
+CONCLUSIONS    27168
+BACKGROUND     21727
+OBJECTIVE      13839
+Name: target, dtype: int64
+
+Encoded labels example (5): [3 2 2 2 2]
+Number of classes: 5; Classes: ['BACKGROUND' 'CONCLUSIONS' 'METHODS' 'OBJECTIVE' 'RESULTS']
+                                                text  line_number  total_lines
+0  to investigate the efficacy of @ weeks of dail...            0           11
+1  a total of @ patients with primary knee oa wer...            1           11
+2  outcome measures included pain reduction and i...            2           11
+3  pain was assessed using the visual analog pain...            3           11
+4  secondary outcome measures included the wester...            4           11
+
+--------------------------------------------------
+  Preparing data for deep learning
+--------------------------------------------------
+Average length of each sentence: 26.34
+Most sentences are around ~25 words long.
+95% percentile sentene length: 55
+Maximum sentence length in training set: 296
+
+--------------------------------------------------
+  Create text vectorisation layer
+--------------------------------------------------
+
+Random sentence:
+the @-month incidence of tlf was @ % and the incidence of tlf components were , cardiac death @ % , tv-mi @ % , and tlr @ % .
+Length of text: 125
+Vectorised text:
+ [[    2   178   214     4  8554    10     3     2   214     4  8554  1230
+      9   342   339 33478     3  4510     0     0     0     0     0     0
+      0     0     0     0     0     0     0     0     0     0     0     0
+      0     0     0     0     0     0     0     0     0     0     0     0
+      0     0     0     0     0     0     0]]
+
+
+Number of words in vocab: 64841
+Most common words in vocab: ['', '[UNK]', 'the', 'and', 'of']
+Least common words in vocab: ['aainduced', 'aaigroup', 'aachener', 'aachen', 'aaacp']
+
+Text vectoriser config:
+
+{'dtype': 'string',
+ 'max_tokens': 68000,
+ 'name': 'text_vectorization',
+ 'ngrams': None,
+ 'output_mode': 'int',
+ 'output_sequence_length': 55,
+ 'pad_to_max_tokens': False,
+ 'split': 'whitespace',
+ 'standardize': 'lower_and_strip_punctuation',
+ 'trainable': True,
+ 'vocabulary_size': 64841}
+
+Sentence before vectorisation: the @-month incidence of tlf was @ % and the incidence of tlf components were , cardiac death @ % , tv-mi @ % , and tlr @ % .
+
+Sentence after vectorisation (before embedding):
+[[    2   178   214     4  8554    10     3     2   214     4  8554  1230
+      9   342   339 33478     3  4510     0     0     0     0     0     0
+      0     0     0     0     0     0     0     0     0     0     0     0
+      0     0     0     0     0     0     0     0     0     0     0     0
+      0     0     0     0     0     0     0]]
+
+Embedding entence:
+[[[-0.0388182   0.04131894  0.00900315 ... -0.02656513  0.04553607
+   -0.01434753]
+  [ 0.03433098 -0.04431099 -0.03526739 ...  0.02600168  0.03769844
+   -0.00277976]
+  [ 0.03597924 -0.03948123 -0.04427779 ...  0.0355852  -0.04611934
+    0.04072725]
+  ...
+  [ 0.01283877  0.01339077  0.01017095 ... -0.02777423  0.03640895
+   -0.03121115]
+  [ 0.01283877  0.01339077  0.01017095 ... -0.02777423  0.03640895
+   -0.03121115]
+  [ 0.01283877  0.01339077  0.01017095 ... -0.02777423  0.03640895
+   -0.03121115]]]
+
+Embedded sentence shape: (1, 55, 128)
+
