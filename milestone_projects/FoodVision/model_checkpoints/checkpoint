@@ -1,0 +1,2 @@
+model_checkpoint_path: "fine_tuned_AllLayers_data_aug.ckpt"
+all_model_checkpoint_paths: "fine_tuned_AllLayers_data_aug.ckpt"
