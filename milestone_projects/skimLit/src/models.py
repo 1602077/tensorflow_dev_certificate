@@ -80,7 +80,7 @@ token_embed = layers.Embedding(input_dim=len(rct_20k_text_vocab), output_dim=128
 # Creating fast loading datasets
 train_data, val_data, test_data = create_tf_datasets(data_dir)
 
-# Conv-1D Model
+# Model 1: Conv-1D
 
 M1_NAME = "Model1_Conv_1D"
 models.append(M1_NAME)
@@ -100,29 +100,25 @@ model_1.compile(
     optimizer="adam",
     metrics=["accuracy"]
 )
-#
-# model_1.summary()
-# history_model_1 = model_1.fit(
-#     train_data,
-#     steps_per_epoch=int(0.1*len(train_data)),
-#     epochs=3,
-#     validation_data=val_data,
-#     validation_steps=int(0.1 * len(val_data)),
-#     verbose=2
-# )
-# model_1_pred_probs = model_1.predict(val_data)
-# model_1_preds = tf.argmax(model_1_pred_probs, axis=1)
-# model_1_results = calculate_results(val_labels, model_1_preds)
-# print("\nModel 1 Results:")
-# pprint(model_1_results)
+
+model_1.summary()
+history_model_1 = model_1.fit(
+    train_data,
+    steps_per_epoch=int(0.1*len(train_data)),
+    epochs=3,
+    validation_data=val_data,
+    validation_steps=int(0.1 * len(val_data)),
+    verbose=2
+)
+model_1_pred_probs = model_1.predict(val_data)
+model_1_preds = tf.argmax(model_1_pred_probs, axis=1)
+model_1_results = calculate_results(val_labels, model_1_preds)
+print("\nModel 1 Results:")
+pprint(model_1_results)
 
 
-# Feature Extractor with Embedding layers
-
-M2_NAME = "Model2_USE_FeatExtr"
-models.append(M2_NAME)
-print(f"\n{50*'-'}\n  {M2_NAME}\n{50*'-'}")
-
+# Building USE feature extractor
+print(f"\n{50*'-'}\n  Creating embeddings using USE feature extractor from tf_hub\n{50*'-'}")
 tf_hub_embedding_layer = hub.KerasLayer("https://tfhub.dev/google/universal-sentence-encoder/4",
                                         trainable=False,
                                         name="universal_sentence_encoder")
@@ -134,6 +130,10 @@ print(f"Sentence after embedding (first 30 values only):\n {use_embedded_sentenc
 print(f"Length of sentence embedding: {len(use_embedded_sentence[0])}")
 
 
+# Model 2: Feature Extractor with Embedding layers
+M2_NAME = "Model2_USE_FeatExtr"
+models.append(M2_NAME)
+print(f"\n{50*'-'}\n  {M2_NAME}\n{50*'-'}")
 inputs = layers.Input(shape=[], dtype=tf.string)
 pretrained_emebdding = tf_hub_embedding_layer(inputs)
 x = layers.Dense(128, activation="relu")(pretrained_emebdding)
@@ -147,25 +147,27 @@ model_2.compile(
 )
 
 model_2.summary()
-# history_model_2 = model_2.fit(
-#     train_data,
-#     steps_per_epoch=int(0.1*len(train_data)),
-#     epochs=3,
-#     validation_data=val_data,
-#     validation_steps=int(0.1 * len(val_data)),
-#     verbose=2
-# )
-# model_2_pred_probs = model_2.predict(val_data)
-# model_2_preds = tf.argmax(model_2_pred_probs, axis=1)
-# model_2_results = calculate_results(val_labels, model_2_preds)
-# print("\nModel 2 Results:")
-# pprint(model_2_results)
+history_model_2 = model_2.fit(
+    train_data,
+    steps_per_epoch=int(0.1*len(train_data)),
+    epochs=3,
+    validation_data=val_data,
+    validation_steps=int(0.1 * len(val_data)),
+    verbose=2
+)
+model_2_pred_probs = model_2.predict(val_data)
+model_2_preds = tf.argmax(model_2_pred_probs, axis=1)
+model_2_results = calculate_results(val_labels, model_2_preds)
+print("\nModel 2 Results:")
+pprint(model_2_results)
 
 print(f"\n{50*'-'}\n  Creating character embeddings\n{50*'-'}")
+
 
 def split_chars(text):
     """ Split sentences into characters"""
     return " ".join(list(text))
+
 
 # split sequence level data splits into char-level data split
 train_chars = [split_chars(sent) for sent in train_sentences]
@@ -180,10 +182,10 @@ plt.savefig('../logs/4_CharDistribution.png', bbox_inches='tight', dpi=200)
 output_seq_char_len = int(np.percentile(char_lens, 95))
 print(f"Sequence length which covers 95% of sentences: {output_seq_char_len}")
 
-#Get all keyboard characters
+# Get all keyboard characters
 alphabet = string.ascii_lowercase + string.digits + string.punctuation
 print(f"Possible characters: {alphabet}")
-NUM_CHAR_TOKENS = len(alphabet) + 2 # for space and OOV token
+NUM_CHAR_TOKENS = len(alphabet) + 2  # for space and OOV token
 char_vectorizer = TextVectorization(max_tokens=NUM_CHAR_TOKENS,
                                     output_sequence_length=output_seq_len,
                                     name="char_vectoriser")
@@ -219,7 +221,7 @@ train_char_data = tf.data.Dataset.from_tensor_slices((train_chars, train_labels_
 val_char_data = tf.data.Dataset.from_tensor_slices((val_chars, val_labels_one_hot)).batch(32).prefetch(tf.data.AUTOTUNE)
 test_char_data = tf.data.Dataset.from_tensor_slices((test_chars, test_labels_one_hot)).batch(32).prefetch(tf.data.AUTOTUNE)
 
-# # Model 3: Conv1D w/ Character Embedding
+# Model 3: Conv1D w/ Character Embedding
 M3_NAME = "Model3_Conv1D_CharEmbed"
 models.append(M3_NAME)
 
@@ -241,20 +243,21 @@ model_3.compile(
 )
 
 model_3.summary()
-# history_model_3 = model_3.fit(
-#     train_char_data,
-#     steps_per_epoch=int(0.1*len(train_char_data)),
-#     epochs=3,
-#     validation_data=val_char_data,
-#     validation_steps=int(0.1 * len(val_char_data)),
-#     verbose=2
-# )
-# model_3_pred_probs = model_3.predict(val_char_data)
-# model_3_preds = tf.argmax(model_3_pred_probs, axis=1)
-#
-# model_3_results = calculate_results(val_labels_encoded, model_3_preds)
-# print("\nModel 3 Results:")
-# pprint(model_3_results)
+
+history_model_3 = model_3.fit(
+    train_char_data,
+    steps_per_epoch=int(0.1*len(train_char_data)),
+    epochs=3,
+    validation_data=val_char_data,
+    validation_steps=int(0.1 * len(val_char_data)),
+    verbose=2
+)
+model_3_pred_probs = model_3.predict(val_char_data)
+model_3_preds = tf.argmax(model_3_pred_probs, axis=1)
+
+model_3_results = calculate_results(val_labels_encoded, model_3_preds)
+print("\nModel 3 Results:")
+pprint(model_3_results)
 
 # Model 4: Combined pretrained token embeddings and character embeddings (multi-modal model)
 M4_NAME = "Model4_TokenAndCharEmbed"
@@ -312,21 +315,21 @@ print("Check prefetch train and token datasets")
 print(train_char_token_dataset)
 print(val_char_token_dataset)
 
-# history_model_4 = model_4.fit(
-#     train_char_token_dataset,
-#     steps_per_epoch=int(0.1*len(train_char_token_dataset)),
-#     epochs=3,
-#     validation_data=val_char_token_dataset,
-#     validation_steps=int(0.1 * len(val_char_token_dataset)),
-#     verbose=2
-# )
-#
-# model_4_pred_probs = model_4.predict(val_char_token_dataset)
-# model_4_preds = tf.argmax(model_4_pred_probs, axis=1)
-#
-# model_4_results = calculate_results(val_labels_encoded, model_4_preds)
-# print("\nModel 4 Results:")
-# pprint(model_4_results)
+history_model_4 = model_4.fit(
+    train_char_token_dataset,
+    steps_per_epoch=int(0.1*len(train_char_token_dataset)),
+    epochs=3,
+    validation_data=val_char_token_dataset,
+    validation_steps=int(0.1 * len(val_char_token_dataset)),
+    verbose=2
+)
+
+model_4_pred_probs = model_4.predict(val_char_token_dataset)
+model_4_preds = tf.argmax(model_4_pred_probs, axis=1)
+
+model_4_results = calculate_results(val_labels_encoded, model_4_preds)
+print("\nModel 4 Results:")
+pprint(model_4_results)
 
 # Model 5: Tri_Embedding Model - Sentence, Vector & Positional Embeddings
 M5_NAME = "Model5_Tri_Embed_Model"
@@ -336,7 +339,7 @@ print(f"\n{50*'-'}\n  {M5_NAME}\n{50*'-'}")
 # Create positional embeddings
 print("Number of different line numbers")
 train_df["line_number"].value_counts()
-plt.fill
+plt.figure()
 train_df.line_number.plot.hist(xlabel="Number of lines")
 plt.savefig("../logs/5_line_number_distribution.png", bbox_inches="tight", dpi=250)
 
@@ -416,17 +419,17 @@ train_char_token_pos_dataset = tf.data.Dataset.zip((train_char_token_pos_data, t
 train_char_token_pos_dataset = train_char_token_pos_dataset.batch(32).prefetch(tf.data.AUTOTUNE)
 
 val_char_token_pos_data = tf.data.Dataset.from_tensor_slices((val_line_numbers_one_hot,
-                                                                val_total_lines_one_hot,
-                                                                val_sentences,
-                                                                val_chars))
+                                                              val_total_lines_one_hot,
+                                                              val_sentences,
+                                                              val_chars))
 val_token_pos_labels = tf.data.Dataset.from_tensor_slices(val_labels_one_hot)
 val_char_token_pos_dataset = tf.data.Dataset.zip((val_char_token_pos_data, val_token_pos_labels))
 val_char_token_pos_dataset = val_char_token_pos_dataset.batch(32).prefetch(tf.data.AUTOTUNE)
 
 test_char_token_pos_data = tf.data.Dataset.from_tensor_slices((test_line_numbers_one_hot,
-                                                                test_total_lines_one_hot,
-                                                                test_sentences,
-                                                                test_chars))
+                                                               test_total_lines_one_hot,
+                                                               test_sentences,
+                                                               test_chars))
 test_token_pos_labels = tf.data.Dataset.from_tensor_slices(test_labels_one_hot)
 test_char_token_pos_dataset = tf.data.Dataset.zip((test_char_token_pos_data, test_token_pos_labels))
 test_char_token_pos_dataset = test_char_token_pos_dataset.batch(32).prefetch(tf.data.AUTOTUNE)
@@ -448,11 +451,53 @@ model_5_results = calculate_results(val_labels_encoded, model_5_preds)
 print("\nModel 5 Results:")
 pprint(model_5_results)
 
+# Model 6: Tribrid Model trained on full dataset
+M6_NAME = "Model6_TribridModel_FullDataset"
+models.append(M6_NAME)
+print(f"\n{50*'-'}\n  {M6_NAME}\n{50*'-'}")
 
-# print(f"\n{50*'-'}\n  MODEL PERFORMANCE SUMMARIES\n{50*'-'}\n")
-# model_summaries = pd.DataFrame({
-#     eval("M"+str(num)+"_NAME"): eval("model_"+str(num)+"_results")
-#     for num in range(len(models))})
-# model_summaries = model_summaries.transpose()
-# model_summaries["accuracy"] = model_summaries["accuracy"] / 100.
-# print(model_summaries)
+model_6 = tf.keras.models.clone_model(model_5)
+model_6._name = M6_NAME
+
+model_6.summary()
+
+model_6.compile(loss=tf.keras.losses.CategoricalCrossentropy(label_smoothing=0.2),
+                optimizer=tf.keras.optimizers.Adam(),
+                metrics=["accuracy"])
+
+history_model_6 = model_6.fit(
+    train_char_token_pos_dataset,
+    steps_per_epoch=len(train_char_token_pos_dataset),
+    epochs=3,
+    validation_data=val_char_token_pos_dataset,
+    validation_steps=len(val_char_token_pos_dataset),
+    verbose=2
+)
+
+model_6_pred_probs = model_6.predict(val_char_token_pos_dataset)
+model_6_preds = tf.argmax(model_6_pred_probs, axis=1)
+
+model_6_results = calculate_results(val_labels_encoded, model_6_preds)
+print("\nModel 6 Results:")
+pprint(model_6_results)
+
+# Comparing Model Performances
+print(f"\n{50*'-'}\n  MODEL PERFORMANCE SUMMARIES\n{50*'-'}\n")
+model_summaries = pd.DataFrame({
+    eval("M" + str(num) + "_NAME"): eval("model_" + str(num) + "_results")
+    for num in range(len(models))})
+model_summaries = model_summaries.transpose()
+model_summaries["accuracy"] = model_summaries["accuracy"] / 100.
+
+print(model_summaries)
+model_summaries.to_csv("../models/model_summaries.csv", index=False)
+
+# plot all performance metrics
+model_summaries.plot(kind="barh", figsize=(10, 7), ylabel="metrics").legend(bbox_to_anchor=(1.0, 1.0))
+plt.savefig("../models/model_metrics.png", bbox_inches="tight", dpi=200)
+
+# Save all models
+for j in range(len(models)):
+    model = eval("model_" + str(j))
+    model_name = eval("M" + str(j) + "_NAME")
+    model.save("../models/model_name")
