@@ -1,0 +1,70 @@
+Found 25000 files belonging to 2 classes.
+Using 20000 files for training.
+Found 25000 files belonging to 2 classes.
+Using 5000 files for validation.
+
+ Example reviews from train dataset:
+0 b"Oh My God! Please, for the love of all that is holy, Do Not Watch This Movie! It it 82 minutes of my life I will never get back. Sure, I could have stopped watching half way through. But I thought it might get better. It Didn't. Anyone who actually enjoyed this movie is one seriously sick and twisted individual. No wonder us Australians/New Zealanders have a terrible reputation when it comes to making movies. Everything about this movie is horrible, from the acting to the editing. I don't even normally write reviews on here, but in this case I'll make an exception. I only wish someone had of warned me before I hired this catastrophe" 
+
+1 b'This movie is SOOOO funny!!! The acting is WONDERFUL, the Ramones are sexy, the jokes are subtle, and the plot is just what every high schooler dreams of doing to his/her school. I absolutely loved the soundtrack as well as the carefully placed cynicism. If you like monty python, You will love this film. This movie is a tad bit "grease"esk (without all the annoying songs). The songs that are sung are likable; you might even find yourself singing these songs once the movie is through. This musical ranks number two in musicals to me (second next to the blues brothers). But please, do not think of it as a musical per say; seeing as how the songs are so likable, it is hard to tell a carefully choreographed scene is taking place. I think of this movie as more of a comedy with undertones of romance. You will be reminded of what it was like to be a rebellious teenager; needless to say, you will be reminiscing of your old high school days after seeing this film. Highly recommended for both the family (since it is a very youthful but also for adults since there are many jokes that are funnier with age and experience.' 
+
+0 b"Alex D. Linz replaces Macaulay Culkin as the central figure in the third movie in the Home Alone empire. Four industrial spies acquire a missile guidance system computer chip and smuggle it through an airport inside a remote controlled toy car. Because of baggage confusion, grouchy Mrs. Hess (Marian Seldes) gets the car. She gives it to her neighbor, Alex (Linz), just before the spies turn up. The spies rent a house in order to burglarize each house in the neighborhood until they locate the car. Home alone with the chicken pox, Alex calls 911 each time he spots a theft in progress, but the spies always manage to elude the police while Alex is accused of making prank calls. The spies finally turn their attentions toward Alex, unaware that he has rigged devices to cleverly booby-trap his entire house. Home Alone 3 wasn't horrible, but probably shouldn't have been made, you can't just replace Macauley Culkin, Joe Pesci, or Daniel Stern. Home Alone 3 had some funny parts, but I don't like when characters are changed in a movie series, view at own risk." 
+
+0 b"There's a good movie lurking here, but this isn't it. The basic idea is good: to explore the moral issues that would face a group of young survivors of the apocalypse. But the logic is so muddled that it's impossible to get involved.<br /><br />For example, our four heroes are (understandably) paranoid about catching the mysterious airborne contagion that's wiped out virtually all of mankind. Yet they wear surgical masks some times, not others. Some times they're fanatical about wiping down with bleach any area touched by an infected person. Other times, they seem completely unconcerned.<br /><br />Worse, after apparently surviving some weeks or months in this new kill-or-be-killed world, these people constantly behave like total newbs. They don't bother accumulating proper equipment, or food. They're forever running out of fuel in the middle of nowhere. They don't take elementary precautions when meeting strangers. And after wading through the rotting corpses of the entire human race, they're as squeamish as sheltered debutantes. You have to constantly wonder how they could have survived this long... and even if they did, why anyone would want to make a movie about them.<br /><br />So when these dweebs stop to agonize over the moral dimensions of their actions, it's impossible to take their soul-searching seriously. Their actions would first have to make some kind of minimal sense.<br /><br />On top of all this, we must contend with the dubious acting abilities of Chris Pine. His portrayal of an arrogant young James T Kirk might have seemed shrewd, when viewed in isolation. But in Carriers he plays on exactly that same note: arrogant and boneheaded. It's impossible not to suspect that this constitutes his entire dramatic range.<br /><br />On the positive side, the film *looks* excellent. It's got an over-sharp, saturated look that really suits the southwestern US locale. But that can't save the truly feeble writing nor the paper-thin (and annoying) characters. Even if you're a fan of the end-of-the-world genre, you should save yourself the agony of watching Carriers." 
+
+0 b'I saw this movie at an actual movie theater (probably the $2.00 one) with my cousin and uncle. We were around 11 and 12, I guess, and really into scary movies. I remember being so excited to see it because my cool uncle let us pick the movie (and we probably never got to do that again!) and sooo disappointed afterwards!! Just boring and not scary. The only redeeming thing I can remember was Corky Pigeon from Silver Spoons, and that wasn\'t all that great, just someone I recognized. I\'ve seen bad movies before and this one has always stuck out in my mind as the worst. This was from what I can recall, one of the most boring, non-scary, waste of our collective $6, and a waste of film. I have read some of the reviews that say it is worth a watch and I say, "Too each his own", but I wouldn\'t even bother. Not even so bad it\'s good.' 
+
+Example embedding for vector [1,2,3]:
+[[-0.04440179  0.01291176 -0.04087185 -0.03296677 -0.01487533]
+ [ 0.01389842 -0.01590959 -0.01635857  0.01281244  0.04237247]
+ [-0.04270072  0.03629876  0.02570576 -0.00762949  0.01750043]]
+
+Epoch 1/15
+20/20 - 2s - loss: 0.6918 - accuracy: 0.5028 - val_loss: 0.6895 - val_accuracy: 0.4886
+Epoch 2/15
+20/20 - 1s - loss: 0.6859 - accuracy: 0.5028 - val_loss: 0.6817 - val_accuracy: 0.4886
+Epoch 3/15
+20/20 - 1s - loss: 0.6756 - accuracy: 0.5028 - val_loss: 0.6694 - val_accuracy: 0.4886
+Epoch 4/15
+20/20 - 1s - loss: 0.6599 - accuracy: 0.5028 - val_loss: 0.6516 - val_accuracy: 0.4886
+Epoch 5/15
+20/20 - 1s - loss: 0.6377 - accuracy: 0.5037 - val_loss: 0.6279 - val_accuracy: 0.4946
+Epoch 6/15
+20/20 - 1s - loss: 0.6088 - accuracy: 0.5522 - val_loss: 0.5992 - val_accuracy: 0.5704
+Epoch 7/15
+20/20 - 1s - loss: 0.5755 - accuracy: 0.6318 - val_loss: 0.5686 - val_accuracy: 0.6338
+Epoch 8/15
+20/20 - 1s - loss: 0.5400 - accuracy: 0.6973 - val_loss: 0.5380 - val_accuracy: 0.6808
+Epoch 9/15
+20/20 - 1s - loss: 0.5050 - accuracy: 0.7444 - val_loss: 0.5097 - val_accuracy: 0.7180
+Epoch 10/15
+20/20 - 1s - loss: 0.4716 - accuracy: 0.7730 - val_loss: 0.4837 - val_accuracy: 0.7418
+Epoch 11/15
+20/20 - 1s - loss: 0.4408 - accuracy: 0.7954 - val_loss: 0.4618 - val_accuracy: 0.7560
+Epoch 12/15
+20/20 - 1s - loss: 0.4138 - accuracy: 0.8133 - val_loss: 0.4438 - val_accuracy: 0.7676
+Epoch 13/15
+20/20 - 1s - loss: 0.3902 - accuracy: 0.8282 - val_loss: 0.4290 - val_accuracy: 0.7782
+Epoch 14/15
+20/20 - 1s - loss: 0.3695 - accuracy: 0.8386 - val_loss: 0.4171 - val_accuracy: 0.7882
+Epoch 15/15
+20/20 - 1s - loss: 0.3512 - accuracy: 0.8490 - val_loss: 0.4074 - val_accuracy: 0.7950
+
+Model: "Model_WordEmbeddingDemo"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+text_vectorization (TextVect (None, 100)               0         
+_________________________________________________________________
+embedding (Embedding)        (None, 100, 16)           160000    
+_________________________________________________________________
+global_average_pooling1d (Gl (None, 16)                0         
+_________________________________________________________________
+dense (Dense)                (None, 16)                272       
+_________________________________________________________________
+dense_1 (Dense)              (None, 1)                 17        
+=================================================================
+Total params: 160,289
+Trainable params: 160,289
+Non-trainable params: 0
+_________________________________________________________________

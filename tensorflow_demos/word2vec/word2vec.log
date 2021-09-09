@@ -1,0 +1,108 @@
+Example sentence: The wide road shimmered in the hot sun
+No. of tokens: 8
+
+Vocab: {'<pad>': 0, 'the': 1, 'wide': 2, 'road': 3, 'shimmered': 4, 'in': 5, 'hot': 6, 'sun': 7}
+Inverse_vocab: {0: '<pad>', 1: 'the', 2: 'wide', 3: 'road', 4: 'shimmered', 5: 'in', 6: 'hot', 7: 'sun'}
+
+Vectorised Sentence: [1, 2, 3, 4, 5, 1, 6, 7]
+
+Number of skipgrams: 26
+Some example skipgrams:
+(3, 1): (road, the)
+(4, 5): (shimmered, in)
+(4, 2): (shimmered, wide)
+(6, 1): (hot, the)
+(5, 3): (in, road)
+
+Negative sampling candidates: ['wide', 'the', 'shimmered', 'road']
+target_index    : 3
+target_word     : road
+context_indices : [1 2 1 4 3]
+context_words   : ['the', 'wide', 'the', 'shimmered', 'road']
+label           : [1 0 0 0 0]
+
+target  : tf.Tensor(3, shape=(), dtype=int32)
+context : tf.Tensor([1 2 1 4 3], shape=(5,), dtype=int64)
+label   : tf.Tensor([1 0 0 0 0], shape=(5,), dtype=int64)
+
+Sampling table:
+[0.00315225 0.00315225 0.00547597 0.00741556 0.00912817 0.01068435
+ 0.01212381 0.01347162 0.01474487 0.0159558 ]
+
+Shakespeare dataset (fist 20 lines):
+First Citizen:
+Before we proceed any further, hear me speak.
+
+All:
+Speak, speak.
+
+First Citizen:
+You are all resolved rather to die than to famish?
+
+All:
+Resolved. resolved.
+
+First Citizen:
+First, you know Caius Marcius is chief enemy to the people.
+
+All:
+We know't, we know't.
+
+First Citizen:
+Let us kill him, and we'll have corn at our own price.
+
+Inverse vocab[:20]: ['', '[UNK]', 'the', 'and', 'to', 'i', 'of', 'you', 'my', 'a', 'that', 'in', 'is', 'not', 'for', 'with', 'me', 'it', 'be', 'your']
+
+Number of sequences: 32777
+[ 89 270   0   0   0   0   0   0   0   0] => ['first', 'citizen', '', '', '', '', '', '', '', '']
+[138  36 982 144 673 125  16 106   0   0] => ['before', 'we', 'proceed', 'any', 'further', 'hear', 'me', 'speak', '', '']
+[34  0  0  0  0  0  0  0  0  0] => ['all', '', '', '', '', '', '', '', '', '']
+[106 106   0   0   0   0   0   0   0   0] => ['speak', 'speak', '', '', '', '', '', '', '', '']
+[ 89 270   0   0   0   0   0   0   0   0] => ['first', 'citizen', '', '', '', '', '', '', '', '']
+
+
+targets.shape: (64601,)
+contexts.shape: (64601, 5)
+labels.shape: (64601, 5)
+<BatchDataset shapes: (((1024,), (1024, 5)), (1024, 5)), types: ((tf.int64, tf.int64), tf.int64)>
+<PrefetchDataset shapes: (((1024,), (1024, 5)), (1024, 5)), types: ((tf.int64, tf.int64), tf.int64)>
+Epoch 1/20
+63/63 - 1s - loss: 1.6083 - accuracy: 0.2306
+Epoch 2/20
+63/63 - 1s - loss: 1.5895 - accuracy: 0.5571
+Epoch 3/20
+63/63 - 1s - loss: 1.5429 - accuracy: 0.6146
+Epoch 4/20
+63/63 - 1s - loss: 1.4603 - accuracy: 0.5850
+Epoch 5/20
+63/63 - 1s - loss: 1.3613 - accuracy: 0.5891
+Epoch 6/20
+63/63 - 1s - loss: 1.2635 - accuracy: 0.6138
+Epoch 7/20
+63/63 - 1s - loss: 1.1722 - accuracy: 0.6458
+Epoch 8/20
+63/63 - 1s - loss: 1.0877 - accuracy: 0.6795
+Epoch 9/20
+63/63 - 1s - loss: 1.0093 - accuracy: 0.7115
+Epoch 10/20
+63/63 - 1s - loss: 0.9367 - accuracy: 0.7405
+Epoch 11/20
+63/63 - 1s - loss: 0.8695 - accuracy: 0.7653
+Epoch 12/20
+63/63 - 1s - loss: 0.8075 - accuracy: 0.7883
+Epoch 13/20
+63/63 - 1s - loss: 0.7506 - accuracy: 0.8068
+Epoch 14/20
+63/63 - 1s - loss: 0.6984 - accuracy: 0.8237
+Epoch 15/20
+63/63 - 1s - loss: 0.6506 - accuracy: 0.8387
+Epoch 16/20
+63/63 - 1s - loss: 0.6071 - accuracy: 0.8523
+Epoch 17/20
+63/63 - 1s - loss: 0.5675 - accuracy: 0.8646
+Epoch 18/20
+63/63 - 1s - loss: 0.5314 - accuracy: 0.8752
+Epoch 19/20
+63/63 - 1s - loss: 0.4985 - accuracy: 0.8846
+Epoch 20/20
+63/63 - 1s - loss: 0.4687 - accuracy: 0.8937
