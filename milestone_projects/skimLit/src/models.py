@@ -500,4 +500,4 @@ plt.savefig("../models/model_metrics.png", bbox_inches="tight", dpi=200)
 for j in range(len(models)):
     model = eval("model_" + str(j))
     model_name = eval("M" + str(j) + "_NAME")
-    model.save("../models/model_name")
+    model.save(f"../models/{model_name}")
