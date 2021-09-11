@@ -22,19 +22,19 @@ Maximum sentence length in training set: 296
 --------------------------------------------------
 Model: "Model1_Conv_1D"
 _________________________________________________________________
-Layer (type)                 Output Shape              Param #   
+Layer (type)                 Output Shape              Param #
 =================================================================
-input_1 (InputLayer)         [(None, 1)]               0         
+input_1 (InputLayer)         [(None, 1)]               0
 _________________________________________________________________
-text_vectorization (TextVect (None, 55)                0         
+text_vectorization (TextVect (None, 55)                0
 _________________________________________________________________
-token_embedding (Embedding)  (None, 55, 128)           8299648   
+token_embedding (Embedding)  (None, 55, 128)           8299648
 _________________________________________________________________
-conv1d (Conv1D)              (None, 55, 64)            41024     
+conv1d (Conv1D)              (None, 55, 64)            41024
 _________________________________________________________________
-global_average_pooling1d (Gl (None, 64)                0         
+global_average_pooling1d (Gl (None, 64)                0
 _________________________________________________________________
-dense (Dense)                (None, 5)                 325       
+dense (Dense)                (None, 5)                 325
 =================================================================
 Total params: 8,340,997
 Trainable params: 8,340,997
@@ -71,15 +71,15 @@ Length of sentence embedding: 512
 --------------------------------------------------
 Model: "Model2_USE_FeatExtr"
 _________________________________________________________________
-Layer (type)                 Output Shape              Param #   
+Layer (type)                 Output Shape              Param #
 =================================================================
-input_2 (InputLayer)         [(None,)]                 0         
+input_2 (InputLayer)         [(None,)]                 0
 _________________________________________________________________
-universal_sentence_encoder ( (None, 512)               256797824 
+universal_sentence_encoder ( (None, 512)               256797824
 _________________________________________________________________
-dense_1 (Dense)              (None, 128)               65664     
+dense_1 (Dense)              (None, 128)               65664
 _________________________________________________________________
-dense_2 (Dense)              (None, 5)                 645       
+dense_2 (Dense)              (None, 5)                 645
 =================================================================
 Total params: 256,864,133
 Trainable params: 66,309
@@ -113,19 +113,19 @@ Bottom 5 chars: ['k', 'x', 'z', 'q', 'j']
 --------------------------------------------------
 Model: "Model3_Conv1D_CharEmbed"
 _________________________________________________________________
-Layer (type)                 Output Shape              Param #   
+Layer (type)                 Output Shape              Param #
 =================================================================
-input_3 (InputLayer)         [(None, 1)]               0         
+input_3 (InputLayer)         [(None, 1)]               0
 _________________________________________________________________
-char_vectoriser (TextVectori (None, 55)                0         
+char_vectoriser (TextVectori (None, 55)                0
 _________________________________________________________________
-char_embed (Embedding)       (None, 55, 25)            700       
+char_embed (Embedding)       (None, 55, 25)            700
 _________________________________________________________________
-conv1d_1 (Conv1D)            (None, 55, 64)            8064      
+conv1d_1 (Conv1D)            (None, 55, 64)            8064
 _________________________________________________________________
-global_max_pooling1d (Global (None, 64)                0         
+global_max_pooling1d (Global (None, 64)                0
 _________________________________________________________________
-dense_3 (Dense)              (None, 5)                 325       
+dense_3 (Dense)              (None, 5)                 325
 =================================================================
 Total params: 9,089
 Trainable params: 9,089
@@ -149,32 +149,32 @@ Model 3 Results:
 --------------------------------------------------
 Model: "Model4_TokenAndCharEmbed"
 __________________________________________________________________________________________________
-Layer (type)                    Output Shape         Param #     Connected to                     
+Layer (type)                    Output Shape         Param #     Connected to
 ==================================================================================================
-char_input (InputLayer)         [(None, 1)]          0                                            
+char_input (InputLayer)         [(None, 1)]          0
 __________________________________________________________________________________________________
-token_inputs (InputLayer)       [(None,)]            0                                            
+token_inputs (InputLayer)       [(None,)]            0
 __________________________________________________________________________________________________
-char_vectoriser (TextVectorizat (None, 55)           0           char_input[0][0]                 
+char_vectoriser (TextVectorizat (None, 55)           0           char_input[0][0]
 __________________________________________________________________________________________________
-universal_sentence_encoder (Ker (None, 512)          256797824   token_inputs[0][0]               
+universal_sentence_encoder (Ker (None, 512)          256797824   token_inputs[0][0]
 __________________________________________________________________________________________________
-char_embed (Embedding)          (None, 55, 25)       700         char_vectoriser[1][0]            
+char_embed (Embedding)          (None, 55, 25)       700         char_vectoriser[1][0]
 __________________________________________________________________________________________________
-dense_4 (Dense)                 (None, 128)          65664       universal_sentence_encoder[1][0] 
+dense_4 (Dense)                 (None, 128)          65664       universal_sentence_encoder[1][0]
 __________________________________________________________________________________________________
-bidirectional (Bidirectional)   (None, 48)           9600        char_embed[1][0]                 
+bidirectional (Bidirectional)   (None, 48)           9600        char_embed[1][0]
 __________________________________________________________________________________________________
-token_char_hybrid (Concatenate) (None, 176)          0           dense_4[0][0]                    
-                                                                 bidirectional[0][0]              
+token_char_hybrid (Concatenate) (None, 176)          0           dense_4[0][0]
+                                                                 bidirectional[0][0]
 __________________________________________________________________________________________________
-dropout (Dropout)               (None, 176)          0           token_char_hybrid[0][0]          
+dropout (Dropout)               (None, 176)          0           token_char_hybrid[0][0]
 __________________________________________________________________________________________________
-dense_5 (Dense)                 (None, 128)          22656       dropout[0][0]                    
+dense_5 (Dense)                 (None, 128)          22656       dropout[0][0]
 __________________________________________________________________________________________________
-dropout_1 (Dropout)             (None, 128)          0           dense_5[0][0]                    
+dropout_1 (Dropout)             (None, 128)          0           dense_5[0][0]
 __________________________________________________________________________________________________
-dense_6 (Dense)                 (None, 5)            645         dropout_1[0][0]                  
+dense_6 (Dense)                 (None, 5)            645         dropout_1[0][0]
 ==================================================================================================
 Total params: 256,897,089
 Trainable params: 99,265
@@ -227,42 +227,42 @@ Train total line numbers one-hot [:10]:
 Shape: (180040, 20)
 Model: "Model5_Tri_Embed_Model"
 __________________________________________________________________________________________________
-Layer (type)                    Output Shape         Param #     Connected to                     
+Layer (type)                    Output Shape         Param #     Connected to
 ==================================================================================================
-char_inputs (InputLayer)        [(None, 1)]          0                                            
+char_inputs (InputLayer)        [(None, 1)]          0
 __________________________________________________________________________________________________
-token_inputs (InputLayer)       [(None,)]            0                                            
+token_inputs (InputLayer)       [(None,)]            0
 __________________________________________________________________________________________________
-char_vectoriser (TextVectorizat (None, 55)           0           char_inputs[0][0]                
+char_vectoriser (TextVectorizat (None, 55)           0           char_inputs[0][0]
 __________________________________________________________________________________________________
-universal_sentence_encoder (Ker (None, 512)          256797824   token_inputs[0][0]               
+universal_sentence_encoder (Ker (None, 512)          256797824   token_inputs[0][0]
 __________________________________________________________________________________________________
-char_embed (Embedding)          (None, 55, 25)       700         char_vectoriser[2][0]            
+char_embed (Embedding)          (None, 55, 25)       700         char_vectoriser[2][0]
 __________________________________________________________________________________________________
-dense_7 (Dense)                 (None, 128)          65664       universal_sentence_encoder[2][0] 
+dense_7 (Dense)                 (None, 128)          65664       universal_sentence_encoder[2][0]
 __________________________________________________________________________________________________
-bidirectional_1 (Bidirectional) (None, 48)           9600        char_embed[2][0]                 
+bidirectional_1 (Bidirectional) (None, 48)           9600        char_embed[2][0]
 __________________________________________________________________________________________________
-M5_char_token_hybrid_embedding  (None, 176)          0           dense_7[0][0]                    
-                                                                 bidirectional_1[0][0]            
+M5_char_token_hybrid_embedding  (None, 176)          0           dense_7[0][0]
+                                                                 bidirectional_1[0][0]
 __________________________________________________________________________________________________
-line_num_inputs (InputLayer)    [(None, 15)]         0                                            
+line_num_inputs (InputLayer)    [(None, 15)]         0
 __________________________________________________________________________________________________
-total_num_inputs (InputLayer)   [(None, 20)]         0                                            
+total_num_inputs (InputLayer)   [(None, 20)]         0
 __________________________________________________________________________________________________
 dense_10 (Dense)                (None, 256)          45312       M5_char_token_hybrid_embedding[0]
 __________________________________________________________________________________________________
-dense_8 (Dense)                 (None, 32)           512         line_num_inputs[0][0]            
+dense_8 (Dense)                 (None, 32)           512         line_num_inputs[0][0]
 __________________________________________________________________________________________________
-dense_9 (Dense)                 (None, 32)           672         total_num_inputs[0][0]           
+dense_9 (Dense)                 (None, 32)           672         total_num_inputs[0][0]
 __________________________________________________________________________________________________
-dropout_2 (Dropout)             (None, 256)          0           dense_10[0][0]                   
+dropout_2 (Dropout)             (None, 256)          0           dense_10[0][0]
 __________________________________________________________________________________________________
-M5_char_token_pos_embed (Concat (None, 320)          0           dense_8[0][0]                    
-                                                                 dense_9[0][0]                    
-                                                                 dropout_2[0][0]                  
+M5_char_token_pos_embed (Concat (None, 320)          0           dense_8[0][0]
+                                                                 dense_9[0][0]
+                                                                 dropout_2[0][0]
 __________________________________________________________________________________________________
-output_layer (Dense)            (None, 5)            1605        M5_char_token_pos_embed[0][0]    
+output_layer (Dense)            (None, 5)            1605        M5_char_token_pos_embed[0][0]
 ==================================================================================================
 Total params: 256,921,889
 Trainable params: 124,065
@@ -286,42 +286,42 @@ Model 5 Results:
 --------------------------------------------------
 Model: "Model6_TribridModel_FullDataset"
 __________________________________________________________________________________________________
-Layer (type)                    Output Shape         Param #     Connected to                     
+Layer (type)                    Output Shape         Param #     Connected to
 ==================================================================================================
-char_inputs (InputLayer)        [(None, 1)]          0                                            
+char_inputs (InputLayer)        [(None, 1)]          0
 __________________________________________________________________________________________________
-token_inputs (InputLayer)       [(None,)]            0                                            
+token_inputs (InputLayer)       [(None,)]            0
 __________________________________________________________________________________________________
-char_vectoriser (TextVectorizat (None, 55)           0           char_inputs[0][0]                
+char_vectoriser (TextVectorizat (None, 55)           0           char_inputs[0][0]
 __________________________________________________________________________________________________
-universal_sentence_encoder (Ker (None, 512)          256797824   token_inputs[0][0]               
+universal_sentence_encoder (Ker (None, 512)          256797824   token_inputs[0][0]
 __________________________________________________________________________________________________
-char_embed (Embedding)          (None, 55, 25)       700         char_vectoriser[0][0]            
+char_embed (Embedding)          (None, 55, 25)       700         char_vectoriser[0][0]
 __________________________________________________________________________________________________
-dense_7 (Dense)                 (None, 128)          65664       universal_sentence_encoder[0][0] 
+dense_7 (Dense)                 (None, 128)          65664       universal_sentence_encoder[0][0]
 __________________________________________________________________________________________________
-bidirectional_1 (Bidirectional) (None, 48)           9600        char_embed[0][0]                 
+bidirectional_1 (Bidirectional) (None, 48)           9600        char_embed[0][0]
 __________________________________________________________________________________________________
-M5_char_token_hybrid_embedding  (None, 176)          0           dense_7[0][0]                    
-                                                                 bidirectional_1[0][0]            
+M5_char_token_hybrid_embedding  (None, 176)          0           dense_7[0][0]
+                                                                 bidirectional_1[0][0]
 __________________________________________________________________________________________________
-line_num_inputs (InputLayer)    [(None, 15)]         0                                            
+line_num_inputs (InputLayer)    [(None, 15)]         0
 __________________________________________________________________________________________________
-total_num_inputs (InputLayer)   [(None, 20)]         0                                            
+total_num_inputs (InputLayer)   [(None, 20)]         0
 __________________________________________________________________________________________________
 dense_10 (Dense)                (None, 256)          45312       M5_char_token_hybrid_embedding[0]
 __________________________________________________________________________________________________
-dense_8 (Dense)                 (None, 32)           512         line_num_inputs[0][0]            
+dense_8 (Dense)                 (None, 32)           512         line_num_inputs[0][0]
 __________________________________________________________________________________________________
-dense_9 (Dense)                 (None, 32)           672         total_num_inputs[0][0]           
+dense_9 (Dense)                 (None, 32)           672         total_num_inputs[0][0]
 __________________________________________________________________________________________________
-dropout_2 (Dropout)             (None, 256)          0           dense_10[0][0]                   
+dropout_2 (Dropout)             (None, 256)          0           dense_10[0][0]
 __________________________________________________________________________________________________
-M5_char_token_pos_embed (Concat (None, 320)          0           dense_8[0][0]                    
-                                                                 dense_9[0][0]                    
-                                                                 dropout_2[0][0]                  
+M5_char_token_pos_embed (Concat (None, 320)          0           dense_8[0][0]
+                                                                 dense_9[0][0]
+                                                                 dropout_2[0][0]
 __________________________________________________________________________________________________
-output_layer (Dense)            (None, 5)            1605        M5_char_token_pos_embed[0][0]    
+output_layer (Dense)            (None, 5)            1605        M5_char_token_pos_embed[0][0]
 ==================================================================================================
 Total params: 256,921,889
 Trainable params: 124,065
