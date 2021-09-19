@@ -1,0 +1,41 @@
+Filename: BTC_USD_2013-10-01_2021-05-18-CoinDesk.csv
+
+
+Visualising using pandas library
+           Currency  Closing Price (USD)  24h Open (USD)  24h High (USD)  24h Low (USD)
+Date                                                                                   
+2013-10-01      BTC            123.65499       124.30466       124.75166      122.56349
+2013-10-02      BTC            125.45500       123.65499       125.75850      123.63383
+2013-10-03      BTC            108.58483       125.45500       125.66566       83.32833
+2013-10-04      BTC            118.67466       108.58483       118.67500      107.05816
+2013-10-05      BTC            121.33866       118.67466       121.93633      118.00566 
+
+<class 'pandas.core.frame.DataFrame'>
+DatetimeIndex: 2787 entries, 2013-10-01 to 2021-05-18
+Data columns (total 5 columns):
+ #   Column               Non-Null Count  Dtype  
+---  ------               --------------  -----  
+ 0   Currency             2787 non-null   object 
+ 1   Closing Price (USD)  2787 non-null   float64
+ 2   24h Open (USD)       2787 non-null   float64
+ 3   24h High (USD)       2787 non-null   float64
+ 4   24h Low (USD)        2787 non-null   float64
+dtypes: float64(4), object(1)
+memory usage: 130.6+ KB
+None
+
+Number of samples: 2787
+
+                Price
+Date                 
+2013-10-01  123.65499
+2013-10-02  125.45500
+2013-10-03  108.58483
+2013-10-04  118.67466
+2013-10-05  121.33866
+
+Visualing using csv module
+First 10 timesteps:
+[datetime.datetime(2013, 10, 1, 0, 0), datetime.datetime(2013, 10, 2, 0, 0), datetime.datetime(2013, 10, 3, 0, 0), datetime.datetime(2013, 10, 4, 0, 0), datetime.datetime(2013, 10, 5, 0, 0), datetime.datetime(2013, 10, 6, 0, 0), datetime.datetime(2013, 10, 7, 0, 0), datetime.datetime(2013, 10, 8, 0, 0), datetime.datetime(2013, 10, 9, 0, 0), datetime.datetime(2013, 10, 10, 0, 0)]
+[123.65499, 125.455, 108.58483, 118.67466, 121.33866, 120.65533, 121.795, 123.033, 124.049, 125.96116]
+

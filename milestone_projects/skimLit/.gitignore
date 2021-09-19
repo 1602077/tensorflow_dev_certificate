@@ -1,4 +1,5 @@
 data/
 .idea/
 **/.DS_Store
-../models/GLoVe/
+/models/GLoVe/
+/data/
