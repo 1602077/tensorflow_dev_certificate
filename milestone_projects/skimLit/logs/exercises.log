@@ -20,14 +20,14 @@ dense (Dense)                   (None, 128)          38528       global_average_
 __________________________________________________________________________________________________
 bidirectional (Bidirectional)   (None, 48)           9600        char_embed[0][0]                 
 __________________________________________________________________________________________________
-M7_char_token_hybrid_embed (Con (None, 176)          0           dense[0][0]                      
+M7_char_token_hybrid_embedding  (None, 176)          0           dense[0][0]                      
                                                                  bidirectional[0][0]              
 __________________________________________________________________________________________________
 line_num_inputs (InputLayer)    [(None, 15)]         0                                            
 __________________________________________________________________________________________________
 total_num_inputs (InputLayer)   [(None, 20)]         0                                            
 __________________________________________________________________________________________________
-dense_3 (Dense)                 (None, 256)          45312       M7_char_token_hybrid_embed[0][0] 
+dense_3 (Dense)                 (None, 256)          45312       M7_char_token_hybrid_embedding[0]
 __________________________________________________________________________________________________
 dense_1 (Dense)                 (None, 32)           512         line_num_inputs[0][0]            
 __________________________________________________________________________________________________
@@ -46,20 +46,20 @@ Trainable params: 19,549,829
 Non-trainable params: 0
 __________________________________________________________________________________________________
 Epoch 1/5
-562/562 - 71s - loss: 1.0973 - accuracy: 0.7240 - val_loss: 0.9505 - val_accuracy: 0.8172
+562/562 - 69s - loss: 1.0993 - accuracy: 0.7215 - val_loss: 0.9540 - val_accuracy: 0.8195
 Epoch 2/5
-562/562 - 65s - loss: 0.9446 - accuracy: 0.8276 - val_loss: 0.9238 - val_accuracy: 0.8381
+562/562 - 66s - loss: 0.9470 - accuracy: 0.8279 - val_loss: 0.9284 - val_accuracy: 0.8391
 Epoch 3/5
-562/562 - 66s - loss: 0.9246 - accuracy: 0.8417 - val_loss: 0.9093 - val_accuracy: 0.8467
+562/562 - 71s - loss: 0.9247 - accuracy: 0.8409 - val_loss: 0.9094 - val_accuracy: 0.8451
 Epoch 4/5
-562/562 - 68s - loss: 0.9134 - accuracy: 0.8527 - val_loss: 0.9074 - val_accuracy: 0.8507
+562/562 - 68s - loss: 0.9138 - accuracy: 0.8494 - val_loss: 0.9072 - val_accuracy: 0.8524
 Epoch 5/5
-562/562 - 67s - loss: 0.9099 - accuracy: 0.8523 - val_loss: 0.8957 - val_accuracy: 0.8534
+562/562 - 71s - loss: 0.9110 - accuracy: 0.8526 - val_loss: 0.8936 - val_accuracy: 0.8551
 
 Model 7 Results:
-{'accuracy': 85.51899907321594,
- 'f1': 0.8536930166763166,
- 'precision': 0.857785138373396,
- 'recall': 0.8551899907321594}
-                        accuracy        f1  precision   recall
-Model7_Tri_Embed_GLoVe   0.85519  0.853693   0.857785  0.85519
+{'accuracy': 85.74738514497551,
+ 'f1': 0.8559153573147171,
+ 'precision': 0.8592974193951082,
+ 'recall': 0.8574738514497551}
+                        accuracy        f1  precision    recall
+Model7_Tri_Embed_GLoVe  0.857474  0.855915   0.859297  0.857474

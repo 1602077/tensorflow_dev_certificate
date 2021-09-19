@@ -191,7 +191,6 @@ embedding_layer = Embedding(
 )
 
 sys.stdout = open("../logs/exercises.log", "w")
-
 # Model 7: Tri-Embedding Model using GLoVE Embeddings
 M7_NAME = "Model7_Tri_Embed_GLoVe"
 # Building the tribrid embedding model
@@ -225,7 +224,7 @@ total_num_model = tf.keras.Model(total_num_inputs, x, name="M7_total_num")
 # total_num_model.summary()
 
 # 7. Combine token & char embed into hybrid embedding
-combined_embedding = layers.Concatenate(name="M7_char_token_hybrid_embed")([token_model.output, char_model.output])
+combined_embedding = layers.Concatenate(name="M7_char_token_hybrid_embedding")([token_model.output, char_model.output])
 combined_embedding = layers.Dense(256, activation="relu")(combined_embedding)
 combined_embedding = layers.Dropout(0.5)(combined_embedding)
 
