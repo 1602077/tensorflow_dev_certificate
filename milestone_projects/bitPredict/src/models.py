@@ -1,5 +1,7 @@
-import sys
+import ast
 import os
+import json
+import sys
 import tensorflow as tf
 from tensorflow.keras import layers
 import matplotlib.pyplot as plt
@@ -72,7 +74,7 @@ def model_1(dir_num, HORIZON=1, WINDOW_SIZE=7):
     # index into test_labels to account for the test window offset
     plot_time_series(timesteps=X_test[-len(test_windows):],  values=test_labels[:, 0], start=offset, label="test data")
 
-    plot_time_series(timesteps=X_test[-len(test_windows):],  values=model_1_preds, start=offset, format="-", label=f"model {dir_num} preds")
+    plot_time_series(timesteps=X_test[-len(test_windows):],  values=tf.reduce_mean(model_1_preds, axis=1), start=offset, format="-", label=f"model {dir_num} preds")
     plt.savefig(f"../models/{dir_num}/model_{dir_num}_predictions.png", dpi=250, bbox_inches="tight")
     return
 
@@ -109,6 +111,37 @@ def train_all_models():
 
     return
 
+def compare_model_performances(model_names=MODEL_NAMES):
+    """
+    Collate model_performances from log files into a pandas dataframe  
+    """
+    df = pd.DataFrame()  # Empty df to store model metrics in
+
+    for model_name in model_names:
+        model_num = int(model_name.split("_")[0])
+
+        with open(f"../models/{model_num}/{model_name}.log", "r") as f:
+            # Read in last 5 lines of log, which contain model metrics 
+            # and then convert lines -> str -> dict -> pandas df.
+            lines = f.readlines()[-5:]
+            json_string = json.dumps(ast.literal_eval(u' '.join(lines)))
+            metrics = json.loads(json_string)  # Conert json str to dict
+            metrics_and_name = {**{"Model": model_name}, **metrics}
+
+            df = df.append(metrics_and_name, ignore_index=True)
+
+    print(df)
+    df.to_csv("../models/model_performance_summaries.csv")
+
+    # Plot models as a horizontal bar chart
+    plt.figure(figsize=(10,7))
+    df.plot(x="Model", y="MAE", kind="barh")
+    plt.xlabel("Mean absolute error")
+    plt.savefig("../models/model_performance_MAE_plot.png", bbox_inches="tight", dpi=250)
+    
+
 
 if __name__ == "__main__":
     train_all_models()
+    compare_model_performances()
+
