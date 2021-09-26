@@ -94,9 +94,7 @@ def create_train_test_datasets(filename="BTC_USD_2013-10-01_2021-05-18-CoinDesk.
         
 
 def labelled_windows(x, horizon):
-    """
-    Create labels for windows dataset
-    """
+    """ Create labels for windows dataset """
     return x[:, :-horizon], x[:, -horizon:]
 
 
@@ -118,16 +116,17 @@ def make_windows(x, horizon, window_size):
 
 
 def make_train_test_split(windows, labels, test_split):
-    """
-    Splits matching pairs of windows and labels into train and test sets
-    """
+    """ Splits matching pairs of windows and labels into train and test sets """
 
     split_size = int(len(windows) * (1-test_split))
     train_windows = windows[:split_size]
     train_labels = labels[:split_size]
     test_windows = windows[split_size:]
     test_labels = labels[split_size:]
+
     return train_windows, train_labels, test_windows, test_labels
+
+
 def plot_time_series(timesteps, values, format=".", start=0, end=None, label=None):
     """
     Plots timesteps against values.
@@ -197,16 +196,13 @@ def evaluate_preds(y_true, y_pred):
     return results
 
 def create_model_checkpoint(model_number, model_name):
-    """
-    Create function to create a model checkpoint of a specific filename
-    """
+    """ Creates a model checkpoint of a specific filename """
+
     filepath = f"../models/{model_number}/{model_name}"
     return tf.keras.callbacks.ModelCheckpoint(filepath=filepath, verbose=0, save_best_only=True)
 
 def make_preds(model, input_data):
-    """
-    Uses model to make predictions on input_data.
-    """
+    """ Use model to make predictions on input_data """
     return tf.squeeze(model.predict(input_data))
 
 
