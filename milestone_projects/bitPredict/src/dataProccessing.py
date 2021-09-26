@@ -4,19 +4,25 @@ import pandas as pd
 import tensorflow as tf
 import matplotlib.pyplot as plt
 from pprint import pprint
+from sklearn.preprocessing import minmax_scale
 
 
-def create_train_test_datasets(filename="BTC_USD_2013-10-01_2021-05-18-CoinDesk.csv", test_split=0.2, log=False, window=False, horizon=1, window_size=7):
+def create_train_test_datasets(filename="BTC_USD_2013-10-01_2021-05-18-CoinDesk.csv",
+                                test_split=0.2,
+                                window=False,
+                                horizon=1,
+                                window_size=7,
+                                block_reward=False):
     """
-    Create train and test datasets using a 80:20 split on BTC price data.
+    Create train and test datasets on BTC price data.
 
     params:
-        filename    (str)  : filename of csv containing BTC price data to be time forecasted
-        test_split  (float): size of test set
-        log         (bool) : if true performs basic logging and plotting of train / test sets
-        window      (bool) : if true window data to transform into a supervised learning problem
-        horizon     (int)  : number of days to predict data for
-        window_size (int)  : number of days of data used to predict horizon
+        filename     (str)   : filename of csv containing BTC price data to be time forecasted
+        test_split   (float) : size of test set
+        window       (bool)  : if true window data to transform into a supervised learning problem
+        horizon      (int)   : number of days to predict data for
+        window_size  (int)   : number of days of data used to predict horizon
+        block_reward (bool)  : if true add in block_reward values
     """
 
     df = pd.read_csv(f"../data/{filename}", parse_dates=["Date"], index_col=["Date"])
@@ -24,67 +30,104 @@ def create_train_test_datasets(filename="BTC_USD_2013-10-01_2021-05-18-CoinDesk.
 
     timesteps = df.index.to_numpy()
     prices = df["Price"].to_numpy()
+    
+    if window and not block_reward:
+        full_windows, full_labels = make_windows(prices, horizon=horizon, window_size=window_size)
+        train_windows, train_labels, test_windows, test_labels = make_train_test_split(full_windows, full_labels, test_split=test_split)
+        
+        return train_windows, train_labels, test_windows, test_labels
 
-    # create train and test splits
-    split_size = int(0.8 * len(prices))  # 80/20 split
-    X_train, y_train = timesteps[:split_size], prices[:split_size]
-    X_test, y_test = timesteps[split_size:], prices[split_size:]
+    if block_reward:
+        block_reward_1 = 50 # 3rd Jan 2009 i.e. not in our dataset
+        block_reward_2 = 25 # 8th Nov 2012
+        block_reward_3 = 12.5 # 9th Jul 2016
+        block_reward_4 = 6.25 # 18 May 2020
 
-    if log:
-        print(f"Training set length: {len(X_train)}.\nTest set length: {len(X_test)}.")
+        block_reward_2_datetime = np.datetime64("2012-11-28")
+        block_reward_3_datetime = np.datetime64("2016-07-09")
+        block_reward_4_datetime = np.datetime64("2020-05-18")
+
+        block_reward_2_days = (block_reward_3_datetime - df.index[0]).days
+        block_reward_3_days = (block_reward_4_datetime - df.index[0]).days
+
+        prices_block = df.copy()
+        prices_block["block_reward"] = None
+        prices_block.iloc[:block_reward_2_days, -1] = block_reward_2
+        prices_block.iloc[block_reward_2_days:block_reward_3_days, -1] = block_reward_3
+        prices_block.iloc[block_reward_3_days:, -1] = block_reward_4
+
+        # Plot block_reward and btc price on scaled axes
+        scaled_prices_block_df = pd.DataFrame(minmax_scale(prices_block[["Price", "block_reward"]]),
+                                                            columns=prices_block.columns,
+                                                            index=prices_block.index)
+        scaled_prices_block_df.plot(figsize=(10,7), title="BTC Price & Block Reward Size (scaled) [Oct-13 -> May-21]")
+        plt.savefig("../logs/dataProcessing_btc_price_block_reward.png", bbox_inches="tight", dpi=250)
+
+        # Make window dataset using pandas (univariate time series helper funcs will not longer work)
+        bitcoin_prices_windowed = prices_block.copy()
+        for i in range(window_size):  # Add windowed columns
+            bitcoin_prices_windowed[f"Price+{i+1}"] = bitcoin_prices_windowed["Price"].shift(periods=i+1)
+
+        # Create X (windows) and y (horizons) features
+        X = bitcoin_prices_windowed.dropna().drop("Price", axis=1).astype(np.float32)
+        y = bitcoin_prices_windowed.dropna()["Price"].astype(np.float32)
+
+        # Make train and test sets
+        split_size = int(0.8 * len(X))
+        X_train, y_train = X[:split_size], y[:split_size]
+        X_test, y_test = X[split_size:], y[split_size:]
+
+        return X_train, y_train, X_test, y_test
+
+    else:
+        # Create basic train and test splits
+        split_size = int(0.8 * len(prices))  # 80/20 split
+        X_train, y_train = timesteps[:split_size], prices[:split_size]
+        X_test, y_test = timesteps[split_size:], prices[split_size:]
+
         plt.figure(figsize=(10,7))
         plot_time_series(X_train, y_train, label="train data")
         plot_time_series(X_test, y_test, label="test data")
-        plt.savefig("../logs/train_test_set0.png", bbox_inches="tight", dpi=250)
+        plt.savefig("../logs/train_test_split_naive.png", bbox_inches="tight", dpi=250)
 
-    if window:
-        def labelled_windows(x, horizon=horizon):
-            """
-            Create labels for windows dataset
-            """
-            return x[:, :-horizon], x[:, -horizon:]
-
-
-        def make_windows(x, horizon=horizon, window_size=window_size):
-            """
-            Turns a 1D array into a 2D array of seq labelled windows of window_size with horizon size labels.
-            """
-            # 1. Create a window of specific window_size + horizon
-            window_step = np.expand_dims(np.arange(window_size+horizon), axis=0)
-
-            # 2. Create a 2D array of multiple windows steps (minus 1 to account for 0 index)
-            window_indexes = window_step + np.expand_dims(np.arange(len(x)-(window_size+horizon-1)), axis=0).T
-            # print(f"Window indexes:\n {window_indexes, window_indexes.shape}")
-
-            # 3. Index on the target array (a time series) with 2D array of multiple window steps
-            windowed_array = x[window_indexes]
-
-            # 4. Get labelled windows
-            windows, labels = labelled_windows(windowed_array, horizon=horizon)
-
-            return windows, labels
-
-        def make_train_test_split(windows, labels, test_split=test_split):
-            """
-            Splits matching pairs of windows and labels into train and test sets
-            """
-
-            split_size = int(len(windows) * (1-test_split))
-            train_windows = windows[:split_size]
-            train_labels = labels[:split_size]
-            test_windows = windows[split_size:]
-            test_labels = labels[split_size:]
-            return train_windows, train_labels, test_windows, test_labels
-
-        full_windows, full_labels = make_windows(prices, horizon=horizon, window_size=window_size)
-        train_windows, train_labels, test_windows, test_labels = make_train_test_split(full_windows, full_labels, test_split=test_split)
-
-        return train_windows, train_labels, test_windows, test_labels
+        return X_train, y_train, X_test, y_test
         
 
-    return X_train, y_train, X_test, y_test
+def labelled_windows(x, horizon):
+    """
+    Create labels for windows dataset
+    """
+    return x[:, :-horizon], x[:, -horizon:]
 
 
+def make_windows(x, horizon, window_size):
+    """
+    Turns a 1D array into a 2D array of seq labelled windows of window_size with horizon size labels.
+    """
+    # 1. Create a window of specific window_size + horizon
+    window_step = np.expand_dims(np.arange(window_size+horizon), axis=0)
+    # 2. Create a 2D array of multiple windows steps (minus 1 to account for 0 index)
+    window_indexes = window_step + np.expand_dims(np.arange(len(x)-(window_size+horizon-1)), axis=0).T
+    # print(f"Window indexes:\n {window_indexes, window_indexes.shape}")
+    # 3. Index on the target array (a time series) with 2D array of multiple window steps
+    windowed_array = x[window_indexes]
+    # 4. Get labelled windows
+    windows, labels = labelled_windows(windowed_array, horizon=horizon)
+
+    return windows, labels
+
+
+def make_train_test_split(windows, labels, test_split):
+    """
+    Splits matching pairs of windows and labels into train and test sets
+    """
+
+    split_size = int(len(windows) * (1-test_split))
+    train_windows = windows[:split_size]
+    train_labels = labels[:split_size]
+    test_windows = windows[split_size:]
+    test_labels = labels[split_size:]
+    return train_windows, train_labels, test_windows, test_labels
 def plot_time_series(timesteps, values, format=".", start=0, end=None, label=None):
     """
     Plots timesteps against values.
@@ -169,6 +212,10 @@ def make_preds(model, input_data):
 
 if __name__ == "__main__":
     filename = "BTC_USD_2013-10-01_2021-05-18-CoinDesk.csv"
-    # create_train_test_datasets(filename, log=True)
-    create_train_test_datasets(filename, False, True, 1, 7)
+    create_train_test_datasets(filename=filename,
+                                test_split=0.2,
+                                window=False,
+                                horizon=1,
+                                window_size=7,
+                                block_reward=True)
 
