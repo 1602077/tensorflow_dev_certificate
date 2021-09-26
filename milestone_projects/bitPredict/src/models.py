@@ -15,7 +15,8 @@ MODEL_NAMES = [
     "2_Dense_W30_H1",
     "3_Dense_W30_H7",
     "4_Conv1D",
-    "5_LSTM"
+    "5_LSTM",
+    "6_Dense_Multivariate"
 ]
 
 def model_0():
@@ -167,10 +168,12 @@ def model_5():
     )
 
     print(model_5.summary())
+
     model_5 = tf.keras.models.load_model(f"../models/5/{MODEL_NAMES[5]}")
     model_5_preds = make_preds(model_5, test_windows)
+
     print(f"\nModel 5 Results:\n")
-    model_1_results = evaluate_preds(tf.squeeze(test_labels), model_5_preds)
+    model_5_results = evaluate_preds(tf.squeeze(test_labels), model_5_preds)
     # plot model
     _, _, X_test, _ = create_train_test_datasets()
     offset = 300
@@ -179,7 +182,46 @@ def model_5():
     plot_time_series(timesteps=X_test[-len(test_windows):],  values=test_labels[:, 0], start=offset, label="test data")
     plot_time_series(timesteps=X_test[-len(test_windows):],  values=model_5_preds, start=offset, format="-", label=f"model 5 preds")
     plt.savefig(f"../models/5/model_5_predictions.png", dpi=250, bbox_inches="tight")
+    return
 
+
+def model_6():
+    """ Model 1 architecture with multivariate data """
+
+    HORIZON = 1
+    WINDOW_SIZE = 7
+
+    X_train, y_train, X_test, y_test = create_train_test_datasets(test_split=0.2, 
+                                                                window=False,
+                                                                horizon=HORIZON,
+                                                                window_size=WINDOW_SIZE,
+                                                                block_reward=True)
+    tf.random.set_seed(42)
+
+    model_6 = tf.keras.Sequential([
+        layers.Dense(128, activation="relu"),
+        layers.Dense(HORIZON)
+    ], name=MODEL_NAMES[6])
+
+    model_6.compile(loss="mae", optimizer="adam")
+
+    model_6.fit(
+        X_train,
+        y_train,
+        epochs=100,
+        batch_size=128,
+        verbose=2,
+        validation_data=(X_test, y_test),
+        callbacks=[create_model_checkpoint(6, MODEL_NAMES[6])]
+    )
+
+    print(model_6.summary())
+
+    model_6 = tf.keras.models.load_model(f"../models/6/{MODEL_NAMES[6]}")
+    model_6_preds = tf.squeeze(model_6.predict(X_test))
+
+    print(f"\nModel 6 Results:\n")
+    model_6_results = evaluate_preds(y_test, model_6_preds)
     return
 
 
@@ -220,10 +262,11 @@ def train_all_models():
         print(f"Model: {MODEL_NAMES[3]}\n")
         model_1(3, HORIZON=7, WINDOW_SIZE=30)
 
-    train_and_save_model(4)  
-    train_and_save_model(5)  
-
+    train_and_save_model(4)
+    train_and_save_model(5)
+    train_and_save_model(6)
     return
+
 
 def compare_model_performances(model_names=MODEL_NAMES):
     """
