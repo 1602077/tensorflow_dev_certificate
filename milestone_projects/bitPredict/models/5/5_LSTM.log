@@ -1,0 +1,229 @@
+Model: 5_LSTM
+
+Epoch 1/100
+18/18 - 1s - loss: 2022.4474 - val_loss: 3888.9453
+Epoch 2/100
+18/18 - 0s - loss: 299.7535 - val_loss: 1296.5316
+Epoch 3/100
+18/18 - 0s - loss: 203.6968 - val_loss: 1043.8036
+Epoch 4/100
+18/18 - 0s - loss: 178.6719 - val_loss: 968.0766
+Epoch 5/100
+18/18 - 0s - loss: 174.7000 - val_loss: 992.4863
+Epoch 6/100
+18/18 - 0s - loss: 170.0088 - val_loss: 949.8615
+Epoch 7/100
+18/18 - 0s - loss: 168.7249 - val_loss: 942.1824
+Epoch 8/100
+18/18 - 0s - loss: 167.1505 - val_loss: 938.9561
+Epoch 9/100
+18/18 - 0s - loss: 165.7464 - val_loss: 941.5162
+Epoch 10/100
+18/18 - 0s - loss: 164.1214 - val_loss: 923.3641
+Epoch 11/100
+18/18 - 0s - loss: 162.3885 - val_loss: 907.7292
+Epoch 12/100
+18/18 - 0s - loss: 164.2737 - val_loss: 949.1022
+Epoch 13/100
+18/18 - 0s - loss: 160.6733 - val_loss: 910.8813
+Epoch 14/100
+18/18 - 0s - loss: 157.4581 - val_loss: 885.5527
+Epoch 15/100
+18/18 - 0s - loss: 156.0354 - val_loss: 935.0778
+Epoch 16/100
+18/18 - 0s - loss: 153.8434 - val_loss: 855.2011
+Epoch 17/100
+18/18 - 0s - loss: 151.6863 - val_loss: 849.4048
+Epoch 18/100
+18/18 - 0s - loss: 148.6240 - val_loss: 893.5984
+Epoch 19/100
+18/18 - 0s - loss: 147.1924 - val_loss: 899.9684
+Epoch 20/100
+18/18 - 0s - loss: 147.5630 - val_loss: 827.5331
+Epoch 21/100
+18/18 - 0s - loss: 145.9958 - val_loss: 799.0468
+Epoch 22/100
+18/18 - 0s - loss: 143.7750 - val_loss: 799.0358
+Epoch 23/100
+18/18 - 0s - loss: 142.1827 - val_loss: 871.9031
+Epoch 24/100
+18/18 - 0s - loss: 140.6001 - val_loss: 781.2081
+Epoch 25/100
+18/18 - 0s - loss: 138.4383 - val_loss: 765.9413
+Epoch 26/100
+18/18 - 0s - loss: 136.1543 - val_loss: 754.1166
+Epoch 27/100
+18/18 - 0s - loss: 135.7529 - val_loss: 748.2365
+Epoch 28/100
+18/18 - 0s - loss: 133.2288 - val_loss: 736.6866
+Epoch 29/100
+18/18 - 0s - loss: 131.9653 - val_loss: 729.9695
+Epoch 30/100
+18/18 - 0s - loss: 134.2766 - val_loss: 830.7151
+Epoch 31/100
+18/18 - 0s - loss: 140.4807 - val_loss: 788.5659
+Epoch 32/100
+18/18 - 0s - loss: 135.6015 - val_loss: 729.2728
+Epoch 33/100
+18/18 - 0s - loss: 136.8912 - val_loss: 722.1241
+Epoch 34/100
+18/18 - 0s - loss: 128.6526 - val_loss: 701.1796
+Epoch 35/100
+18/18 - 0s - loss: 126.1451 - val_loss: 692.8987
+Epoch 36/100
+18/18 - 0s - loss: 127.3580 - val_loss: 735.1896
+Epoch 37/100
+18/18 - 0s - loss: 126.5257 - val_loss: 682.5916
+Epoch 38/100
+18/18 - 0s - loss: 124.1933 - val_loss: 677.0381
+Epoch 39/100
+18/18 - 0s - loss: 125.9765 - val_loss: 734.1625
+Epoch 40/100
+18/18 - 0s - loss: 124.1284 - val_loss: 664.8492
+Epoch 41/100
+18/18 - 0s - loss: 121.9661 - val_loss: 659.3062
+Epoch 42/100
+18/18 - 0s - loss: 123.7680 - val_loss: 656.6664
+Epoch 43/100
+18/18 - 0s - loss: 120.5751 - val_loss: 656.5204
+Epoch 44/100
+18/18 - 0s - loss: 120.4602 - val_loss: 661.1877
+Epoch 45/100
+18/18 - 0s - loss: 120.9435 - val_loss: 650.2408
+Epoch 46/100
+18/18 - 0s - loss: 119.7540 - val_loss: 648.3476
+Epoch 47/100
+18/18 - 0s - loss: 124.0154 - val_loss: 715.0666
+Epoch 48/100
+18/18 - 0s - loss: 121.0761 - val_loss: 754.9764
+Epoch 49/100
+18/18 - 0s - loss: 122.2417 - val_loss: 648.0021
+Epoch 50/100
+18/18 - 0s - loss: 119.9272 - val_loss: 655.6552
+Epoch 51/100
+18/18 - 0s - loss: 118.4181 - val_loss: 666.6048
+Epoch 52/100
+18/18 - 0s - loss: 119.5723 - val_loss: 633.5098
+Epoch 53/100
+18/18 - 0s - loss: 120.7524 - val_loss: 623.2943
+Epoch 54/100
+18/18 - 0s - loss: 117.0608 - val_loss: 672.0377
+Epoch 55/100
+18/18 - 0s - loss: 117.9959 - val_loss: 624.5978
+Epoch 56/100
+18/18 - 0s - loss: 118.3853 - val_loss: 763.3388
+Epoch 57/100
+18/18 - 0s - loss: 136.5046 - val_loss: 624.7880
+Epoch 58/100
+18/18 - 0s - loss: 119.8211 - val_loss: 630.8662
+Epoch 59/100
+18/18 - 0s - loss: 114.3470 - val_loss: 619.5955
+Epoch 60/100
+18/18 - 0s - loss: 114.7986 - val_loss: 617.4849
+Epoch 61/100
+18/18 - 0s - loss: 114.9298 - val_loss: 632.2667
+Epoch 62/100
+18/18 - 0s - loss: 113.8461 - val_loss: 614.3149
+Epoch 63/100
+18/18 - 0s - loss: 115.0492 - val_loss: 621.9219
+Epoch 64/100
+18/18 - 0s - loss: 114.2299 - val_loss: 658.1110
+Epoch 65/100
+18/18 - 0s - loss: 116.4389 - val_loss: 606.5103
+Epoch 66/100
+18/18 - 0s - loss: 112.4848 - val_loss: 604.4973
+Epoch 67/100
+18/18 - 0s - loss: 113.0871 - val_loss: 723.0308
+Epoch 68/100
+18/18 - 0s - loss: 123.3391 - val_loss: 747.8954
+Epoch 69/100
+18/18 - 0s - loss: 127.6525 - val_loss: 648.4466
+Epoch 70/100
+18/18 - 0s - loss: 119.8105 - val_loss: 602.8978
+Epoch 71/100
+18/18 - 0s - loss: 114.0228 - val_loss: 649.0456
+Epoch 72/100
+18/18 - 0s - loss: 115.3684 - val_loss: 620.7855
+Epoch 73/100
+18/18 - 0s - loss: 111.4828 - val_loss: 603.3527
+Epoch 74/100
+18/18 - 0s - loss: 112.4157 - val_loss: 597.1831
+Epoch 75/100
+18/18 - 0s - loss: 111.0511 - val_loss: 629.1331
+Epoch 76/100
+18/18 - 0s - loss: 113.1163 - val_loss: 591.8802
+Epoch 77/100
+18/18 - 0s - loss: 113.3800 - val_loss: 592.9330
+Epoch 78/100
+18/18 - 0s - loss: 109.5414 - val_loss: 593.9522
+Epoch 79/100
+18/18 - 0s - loss: 110.6223 - val_loss: 605.1319
+Epoch 80/100
+18/18 - 0s - loss: 111.3352 - val_loss: 593.6671
+Epoch 81/100
+18/18 - 0s - loss: 110.2337 - val_loss: 593.7667
+Epoch 82/100
+18/18 - 0s - loss: 114.7040 - val_loss: 589.6262
+Epoch 83/100
+18/18 - 0s - loss: 112.5315 - val_loss: 609.8521
+Epoch 84/100
+18/18 - 0s - loss: 110.7394 - val_loss: 591.4246
+Epoch 85/100
+18/18 - 0s - loss: 109.3656 - val_loss: 589.8339
+Epoch 86/100
+18/18 - 0s - loss: 108.8419 - val_loss: 617.4483
+Epoch 87/100
+18/18 - 0s - loss: 109.0627 - val_loss: 590.5316
+Epoch 88/100
+18/18 - 0s - loss: 112.3903 - val_loss: 621.8937
+Epoch 89/100
+18/18 - 0s - loss: 115.6863 - val_loss: 588.9679
+Epoch 90/100
+18/18 - 0s - loss: 111.1542 - val_loss: 744.7275
+Epoch 91/100
+18/18 - 0s - loss: 114.7556 - val_loss: 592.9651
+Epoch 92/100
+18/18 - 0s - loss: 110.0925 - val_loss: 594.2516
+Epoch 93/100
+18/18 - 0s - loss: 114.6832 - val_loss: 624.8510
+Epoch 94/100
+18/18 - 0s - loss: 110.6581 - val_loss: 581.5252
+Epoch 95/100
+18/18 - 0s - loss: 109.1627 - val_loss: 598.3774
+Epoch 96/100
+18/18 - 0s - loss: 115.6525 - val_loss: 592.2650
+Epoch 97/100
+18/18 - 0s - loss: 110.1678 - val_loss: 620.1686
+Epoch 98/100
+18/18 - 0s - loss: 109.9365 - val_loss: 588.7191
+Epoch 99/100
+18/18 - 0s - loss: 108.9370 - val_loss: 584.2910
+Epoch 100/100
+18/18 - 0s - loss: 110.7875 - val_loss: 637.0320
+Model: "5_LSTM"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+input_1 (InputLayer)         [(None, 7)]               0         
+_________________________________________________________________
+lambda (Lambda)              (None, 1, 7)              0         
+_________________________________________________________________
+lstm (LSTM)                  (None, 128)               69632     
+_________________________________________________________________
+dense (Dense)                (None, 32)                4128      
+_________________________________________________________________
+dense_1 (Dense)              (None, 1)                 33        
+=================================================================
+Total params: 73,793
+Trainable params: 73,793
+Non-trainable params: 0
+_________________________________________________________________
+None
+
+Model 5 Results:
+
+{'MAE': 581.5252,
+ 'MAPE': 2.6201952,
+ 'MASE': 1.0215786,
+ 'MSE': 1219921.6,
+ 'RMSE': 1104.5006}
