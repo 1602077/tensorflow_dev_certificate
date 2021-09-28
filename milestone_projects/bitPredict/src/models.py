@@ -4,6 +4,7 @@ import json
 import sys
 import tensorflow as tf
 from tensorflow.keras import layers
+from tensorflow.keras.utils import plot_model
 import matplotlib.pyplot as plt
 from pprint import pprint
 
@@ -16,7 +17,8 @@ MODEL_NAMES = [
     "3_Dense_W30_H7",
     "4_Conv1D",
     "5_LSTM",
-    "6_Dense_Multivariate"
+    "6_Dense_Multivariate",
+    "7_NBEATS"
 ]
 
 def model_0():
@@ -225,6 +227,134 @@ def model_6():
     return
 
 
+def model_7():
+    """ N-BEATS Basic Block Arch Replication """
+
+    # Create NBESTBLOCK custom layer
+    class NBeatsBlock(tf.keras.layers.Layer):
+        def __init__(self, 
+                    input_size: int, 
+                    theta_size: int, 
+                    horizon: int, 
+                    n_neurons: int, 
+                    n_layers: int, 
+                    **kwargs):
+
+            super().__init__(**kwargs)
+            self.input_size = input_size
+            self.theta_size = theta_size
+            self.horizon = horizon
+            self.n_neurons = n_neurons
+            self.n_layers = n_layers
+        
+            # Block contains stack of 4 FC layers each w/ ReLU activation
+            self.hidden = [tf.keras.layers.Dense(n_neurons, activation="relu") for _ in range (n_layers)]
+            # Output of block theta w/ Lin activation
+            self.theta_layer = tf.keras.layers.Dense(theta_size, activation="linear", name="theta")
+
+        def call(self, inputs):
+            x = inputs
+            for layer in self.hidden:
+                x = layer(x)
+            theta = self.theta_layer(x)
+            # Ouput the backfast and forecast from theta
+            backcast, forecast = theta[:, :self.input_size], theta[:, -self.horizon:]
+            return backcast, forecast
+    
+    # Testing N-BEATS Block Class
+    HORIZON, WINDOW_SIZE = 1, 7
+
+    dummy_nbeats_block_layer = NBeatsBlock(input_size=WINDOW_SIZE,
+                                            theta_size=WINDOW_SIZE + HORIZON,
+                                            horizon=HORIZON,
+                                            n_neurons=128,
+                                            n_layers=4)
+
+    # Create dummy inputs and pass into n-beats block layer
+    dummy_inputs = tf.expand_dims(tf.range(WINDOW_SIZE) + 1, axis=0)
+    backcast, forecast = dummy_nbeats_block_layer(dummy_inputs)
+
+    print("\nTesting N-BEATS Block Class")
+    print(f"Dummy Input Shape: {dummy_inputs.shape}")
+    print(f"Backcast: {tf.squeeze(backcast.numpy())}")
+    print(f"Forecast: {tf.squeeze(forecast.numpy())}")
+
+    train_dataset, test_dataset, y_test = nbeats_data_pipeline(HORIZON=HORIZON, WINDOW_SIZE=WINDOW_SIZE)
+
+    # Set up hyperparameters for N-BEATS algorithm
+    N_EPOCHS = 5000
+    N_NEURONS = 512
+    N_LAYERS = 4
+    N_STACKS = 30
+
+    INPUT_SIZE = WINDOW_SIZE * HORIZON
+    THETA_SIZE = INPUT_SIZE + HORIZON
+
+    tf.random.set_seed(42)
+
+    # 1. Setup an instance of NBeatsBlock
+    nbeats_block_layer = NBeatsBlock(
+        input_size=INPUT_SIZE,
+        theta_size=THETA_SIZE,
+        horizon=HORIZON,
+        n_neurons=N_NEURONS,
+        n_layers=N_LAYERS,
+        name="IntialBlock"
+    )
+
+    # 2. Create an input layer for N-BEATS stack
+    stack_input = layers.Input(shape=(INPUT_SIZE), name="stack_input")
+
+    # 3. Create intial back- and forecasts
+    residuals, forecast = nbeats_block_layer(stack_input)
+
+    # 4 - 6. Create stacks of block layers, stack blocks and double residual stacking
+    for i, _ in enumerate(range(N_STACKS-1)):  # first stack already created in 3
+        backcast, block_forecast = NBeatsBlock(
+            input_size=INPUT_SIZE,
+            theta_size=THETA_SIZE,
+            horizon=HORIZON,
+            n_neurons=N_NEURONS,
+            n_layers=N_LAYERS,
+            name=f"NBeatsBlock_{i}"
+        )(residuals)
+
+        residuals = layers.subtract([residuals, backcast], name=f"subtract_{i}")
+        forecast = layers.add([forecast, block_forecast], name=f"add_{i}")
+
+    # 7. Create model
+    model_7 = tf.keras.Model(inputs=stack_input, outputs=forecast, name=MODEL_NAMES[7])
+
+    # 8. Compile model
+    model_7.compile(loss="mae", optimizer="adam")
+
+    print("\nTraining N-BEATS Model")
+    # 9. Fit model
+    model_7.fit(
+        train_dataset,
+        epochs=N_EPOCHS,
+        validation_data=test_dataset,
+        verbose=2,
+        callbacks=[
+            tf.keras.callbacks.EarlyStopping(monitor="val_loss", patience=200, restore_best_weights=True),
+            tf.keras.callbacks.ReduceLROnPlateau(monitor="val_loss", patience=100, verbose=2)
+        ]
+    )
+
+    model_7.save(f"../models/7/{MODEL_NAMES[7]}")
+
+    # Make predictions with N-BEATS model
+    model_7_preds = make_preds(model_7, test_dataset)
+    model_7_results = evaluate_preds(y_test, model_7_preds)
+
+    # Plotting the N-BEATS Architecture
+    plot_model(model_7, to_file=f"../models/7/{MODEL_NAMES[7]}.png")
+
+
+
+    return
+
+
 def train_and_save_model(model_num):
     """ Trains, saves and evaluates a model """
 
@@ -265,6 +395,7 @@ def train_all_models():
     train_and_save_model(4)
     train_and_save_model(5)
     train_and_save_model(6)
+    train_and_save_model(7)
     return
 
 

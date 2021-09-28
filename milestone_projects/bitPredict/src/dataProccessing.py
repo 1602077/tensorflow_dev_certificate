@@ -91,6 +91,48 @@ def create_train_test_datasets(filename="BTC_USD_2013-10-01_2021-05-18-CoinDesk.
         plt.savefig("../logs/train_test_split_naive.png", bbox_inches="tight", dpi=250)
 
         return X_train, y_train, X_test, y_test
+
+
+def nbeats_data_pipeline(filename="BTC_USD_2013-10-01_2021-05-18-CoinDesk.csv",
+                        split_size_ratio = 0.8,
+                        HORIZON=1,
+                        WINDOW_SIZE=7):
+    """ Creating a performant data pipeline for n_beats algorithm"""
+
+    # Create N-BEATS input
+    df = pd.read_csv(f"../data/{filename}", parse_dates=["Date"], index_col=["Date"])
+    bitcoin_prices = pd.DataFrame(df["Closing Price (USD)"]).rename(columns={"Closing Price (USD)": "Price"})
+
+    bitcoin_prices_nbeats = bitcoin_prices.copy()
+    for i in range(WINDOW_SIZE):
+        bitcoin_prices_nbeats[f"Price+{i+1}"] = bitcoin_prices_nbeats["Price"].shift(periods=i+1)
+
+    # Make features and labels
+    X = bitcoin_prices_nbeats.dropna().drop("Price", axis=1)
+    y = bitcoin_prices_nbeats.dropna()["Price"]
+
+    # Make train and test sets
+    split_size = int(len(X) * split_size_ratio)
+    X_train, y_train = X[:split_size], y[:split_size]
+    X_test, y_test = X[split_size:], y[split_size:]
+
+    # Create performant tf datasets
+    train_features_dataset = tf.data.Dataset.from_tensor_slices(X_train)
+    train_labels = tf.data.Dataset.from_tensor_slices(y_train)
+
+    test_features_dataset = tf.data.Dataset.from_tensor_slices(X_test)
+    test_labels = tf.data.Dataset.from_tensor_slices(y_test)
+    
+    # Combine labels and features zip -> tuple
+    train_dataset = tf.data.Dataset.zip((train_features_dataset, train_labels))
+    test_dataset = tf.data.Dataset.zip((test_features_dataset, test_labels))
+
+    # Batch and prefecth datasets
+    BATCH_SIZE = 1024
+    train_dataset = train_dataset.batch(BATCH_SIZE).prefetch(tf.data.AUTOTUNE)
+    test_dataset = test_dataset.batch(BATCH_SIZE).prefetch(tf.data.AUTOTUNE)
+
+    return train_dataset, test_dataset, y_test
         
 
 def labelled_windows(x, horizon):
@@ -208,6 +250,7 @@ def make_preds(model, input_data):
 
 if __name__ == "__main__":
     filename = "BTC_USD_2013-10-01_2021-05-18-CoinDesk.csv"
+    nbeats_data_pipeline()
     create_train_test_datasets(filename=filename,
                                 test_split=0.2,
                                 window=False,
