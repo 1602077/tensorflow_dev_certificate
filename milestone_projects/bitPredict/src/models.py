@@ -18,7 +18,8 @@ MODEL_NAMES = [
     "4_Conv1D",
     "5_LSTM",
     "6_Dense_Multivariate",
-    "7_NBEATS"
+    "7_NBEATS",
+    "8_EnsembleModel"
 ]
 
 def model_0():
@@ -350,9 +351,78 @@ def model_7():
     # Plotting the N-BEATS Architecture
     plot_model(model_7, to_file=f"../models/7/{MODEL_NAMES[7]}.png")
 
-
-
     return
+
+
+def get_ensemble_models(horizon, train_data, test_data, num_iter=10, num_epochs=1000, loss_fns=["mae", "mse", "mape"]):
+    """
+    Returns a list of num_iter models each trained on MAE, MSE, MAPE loss.
+    e.g. if num_iter=10, a list of 30 models will be returned
+    """
+
+    ensemble_models = []
+
+    for i in range(num_iter):
+        for loss_function in loss_fns:
+            print(f"Optimizing model by reducing {loss_function} for {num_epochs} epochs, model number: {i}")
+            # Construct a simple model similiar to model_1
+            model = tf.keras.Sequential([
+                layers.Dense(128, kernel_initializer="he_normal", activation="relu"),
+                layers.Dense(128, kernel_initializer="he_normal", activation="relu"),
+                layers.Dense(horizon)
+            ])
+
+            model.compile(
+                loss=loss_function,
+                optimizer="adam",
+                metrics=["mae", "mse"]
+            )
+
+            model.fit(
+                train_data,
+                epochs=num_epochs,
+                verbose=0,
+                validation_data=test_data,
+                callbacks=[
+                    tf.keras.callbacks.EarlyStopping(monitor="val_loss", patience=200, restore_best_weights=True),
+                    tf.keras.callbacks.ReduceLROnPlateau(monitor="val_loss", patience=100, verbose=1)
+                ]
+            )
+            ensemble_models.append(model)
+
+    return ensemble_models
+
+
+def make_ensemble_preds(ensemble_models, data):
+    ensemble_preds = []
+    for model in ensemble_models:
+        preds = model.predict(data)
+        ensemble_preds.append(preds)
+    return tf.constant(tf.squeeze(ensemble_preds))
+        
+
+
+def model_8():
+    """ Training an ensembe model """
+
+    HORIZON, WINDOW_SIZE = 1, 7
+    train_dataset, test_dataset, y_test = nbeats_data_pipeline(HORIZON=HORIZON, WINDOW_SIZE=WINDOW_SIZE)
+
+    ensemble_models = get_ensemble_models(
+        horizon=HORIZON,
+        train_data=train_dataset,
+        test_data=test_dataset,
+        num_iter=5,
+        num_epochs=1000
+    )
+
+    ensemble_preds = make_ensemble_preds(ensemble_models, test_dataset)
+    ensemble_mean = tf.reduce_mean(ensemble_preds, axis=0)
+    ensemble_median = np.median(ensemble_preds, axis=0)
+    
+    print("Model 8 Results")
+    ensemble_reults = evaluate_preds(y_test, ensemble_mean)
+            
 
 
 def train_and_save_model(model_num):
@@ -396,6 +466,7 @@ def train_all_models():
     train_and_save_model(5)
     train_and_save_model(6)
     train_and_save_model(7)
+    train_and_save_model(8)
     return
 
 
@@ -430,6 +501,7 @@ def compare_model_performances(model_names=MODEL_NAMES):
 
 
 if __name__ == "__main__":
+    # model_8()
     train_all_models()
     compare_model_performances()
 
