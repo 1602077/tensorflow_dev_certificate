@@ -132,7 +132,7 @@ def nbeats_data_pipeline(filename="BTC_USD_2013-10-01_2021-05-18-CoinDesk.csv",
     train_dataset = train_dataset.batch(BATCH_SIZE).prefetch(tf.data.AUTOTUNE)
     test_dataset = test_dataset.batch(BATCH_SIZE).prefetch(tf.data.AUTOTUNE)
 
-    return train_dataset, test_dataset, y_test
+    return train_dataset, test_dataset, X_test, y_test
         
 
 def labelled_windows(x, horizon):
