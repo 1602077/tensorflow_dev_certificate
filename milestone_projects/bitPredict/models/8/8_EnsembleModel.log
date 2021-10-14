@@ -1,0 +1,91 @@
+Model: 8_EnsembleModel
+
+Optimizing model by reducing mae for 1000 epochs, model number: 0
+
+Epoch 00369: ReduceLROnPlateau reducing learning rate to 0.00010000000474974513.
+
+Epoch 00908: ReduceLROnPlateau reducing learning rate to 1.0000000474974514e-05.
+Optimizing model by reducing mse for 1000 epochs, model number: 0
+
+Epoch 00669: ReduceLROnPlateau reducing learning rate to 0.00010000000474974513.
+
+Epoch 00769: ReduceLROnPlateau reducing learning rate to 1.0000000474974514e-05.
+Optimizing model by reducing mape for 1000 epochs, model number: 0
+
+Epoch 00246: ReduceLROnPlateau reducing learning rate to 0.00010000000474974513.
+
+Epoch 00346: ReduceLROnPlateau reducing learning rate to 1.0000000474974514e-05.
+Optimizing model by reducing mae for 1000 epochs, model number: 1
+
+Epoch 00378: ReduceLROnPlateau reducing learning rate to 0.00010000000474974513.
+
+Epoch 00840: ReduceLROnPlateau reducing learning rate to 1.0000000474974514e-05.
+
+Epoch 00940: ReduceLROnPlateau reducing learning rate to 1.0000000656873453e-06.
+Optimizing model by reducing mse for 1000 epochs, model number: 1
+
+Epoch 00418: ReduceLROnPlateau reducing learning rate to 0.00010000000474974513.
+
+Epoch 00518: ReduceLROnPlateau reducing learning rate to 1.0000000474974514e-05.
+Optimizing model by reducing mape for 1000 epochs, model number: 1
+
+Epoch 00190: ReduceLROnPlateau reducing learning rate to 0.00010000000474974513.
+
+Epoch 00894: ReduceLROnPlateau reducing learning rate to 1.0000000474974514e-05.
+
+Epoch 00994: ReduceLROnPlateau reducing learning rate to 1.0000000656873453e-06.
+Optimizing model by reducing mae for 1000 epochs, model number: 2
+
+Epoch 00510: ReduceLROnPlateau reducing learning rate to 0.00010000000474974513.
+
+Epoch 00610: ReduceLROnPlateau reducing learning rate to 1.0000000474974514e-05.
+Optimizing model by reducing mse for 1000 epochs, model number: 2
+
+Epoch 00454: ReduceLROnPlateau reducing learning rate to 0.00010000000474974513.
+
+Epoch 00554: ReduceLROnPlateau reducing learning rate to 1.0000000474974514e-05.
+Optimizing model by reducing mape for 1000 epochs, model number: 2
+
+Epoch 00159: ReduceLROnPlateau reducing learning rate to 0.00010000000474974513.
+
+Epoch 00624: ReduceLROnPlateau reducing learning rate to 1.0000000474974514e-05.
+
+Epoch 00724: ReduceLROnPlateau reducing learning rate to 1.0000000656873453e-06.
+Optimizing model by reducing mae for 1000 epochs, model number: 3
+
+Epoch 00913: ReduceLROnPlateau reducing learning rate to 0.00010000000474974513.
+Optimizing model by reducing mse for 1000 epochs, model number: 3
+
+Epoch 00565: ReduceLROnPlateau reducing learning rate to 0.00010000000474974513.
+
+Epoch 00665: ReduceLROnPlateau reducing learning rate to 1.0000000474974514e-05.
+Optimizing model by reducing mape for 1000 epochs, model number: 3
+
+Epoch 00277: ReduceLROnPlateau reducing learning rate to 0.00010000000474974513.
+
+Epoch 00377: ReduceLROnPlateau reducing learning rate to 1.0000000474974514e-05.
+Optimizing model by reducing mae for 1000 epochs, model number: 4
+
+Epoch 00345: ReduceLROnPlateau reducing learning rate to 0.00010000000474974513.
+
+Epoch 00691: ReduceLROnPlateau reducing learning rate to 1.0000000474974514e-05.
+
+Epoch 00791: ReduceLROnPlateau reducing learning rate to 1.0000000656873453e-06.
+Optimizing model by reducing mse for 1000 epochs, model number: 4
+
+Epoch 00361: ReduceLROnPlateau reducing learning rate to 0.00010000000474974513.
+
+Epoch 00461: ReduceLROnPlateau reducing learning rate to 1.0000000474974514e-05.
+Optimizing model by reducing mape for 1000 epochs, model number: 4
+
+Epoch 00132: ReduceLROnPlateau reducing learning rate to 0.00010000000474974513.
+
+Epoch 00631: ReduceLROnPlateau reducing learning rate to 1.0000000474974514e-05.
+
+Epoch 00731: ReduceLROnPlateau reducing learning rate to 1.0000000656873453e-06.
+Model 8 Results
+{'MAE': 565.14154,
+ 'MAPE': 2.5540347,
+ 'MASE': 0.99279696,
+ 'MSE': 1138724.6,
+ 'RMSE': 1067.1105}

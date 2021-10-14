@@ -280,7 +280,7 @@ def model_7():
     print(f"Backcast: {tf.squeeze(backcast.numpy())}")
     print(f"Forecast: {tf.squeeze(forecast.numpy())}")
 
-    train_dataset, test_dataset, y_test = nbeats_data_pipeline(HORIZON=HORIZON, WINDOW_SIZE=WINDOW_SIZE)
+    train_dataset, test_dataset, X_test, y_test = nbeats_data_pipeline(HORIZON=HORIZON, WINDOW_SIZE=WINDOW_SIZE)
 
     # Set up hyperparameters for N-BEATS algorithm
     N_EPOCHS = 5000
@@ -349,9 +349,7 @@ def model_7():
     model_7_results = evaluate_preds(y_test, model_7_preds)
 
     # Plotting the N-BEATS Architecture
-    plot_model(model_7, to_file=f"../models/7/{MODEL_NAMES[7]}.png")
-
-    return
+    return plot_model(model_7, to_file=f"../models/7/{MODEL_NAMES[7]}.png")
 
 
 def get_ensemble_models(horizon, train_data, test_data, num_iter=10, num_epochs=1000, loss_fns=["mae", "mse", "mape"]):
@@ -389,7 +387,6 @@ def get_ensemble_models(horizon, train_data, test_data, num_iter=10, num_epochs=
                 ]
             )
             ensemble_models.append(model)
-
     return ensemble_models
 
 
@@ -406,7 +403,7 @@ def model_8():
     """ Training an ensembe model """
 
     HORIZON, WINDOW_SIZE = 1, 7
-    train_dataset, test_dataset, y_test = nbeats_data_pipeline(HORIZON=HORIZON, WINDOW_SIZE=WINDOW_SIZE)
+    train_dataset, test_dataset, X_test, y_test = nbeats_data_pipeline(HORIZON=HORIZON, WINDOW_SIZE=WINDOW_SIZE)
 
     ensemble_models = get_ensemble_models(
         horizon=HORIZON,
@@ -422,9 +419,37 @@ def model_8():
     
     print("Model 8 Results")
     ensemble_reults = evaluate_preds(y_test, ensemble_mean)
+
+    # Find upper and lower bounds of ensemble predictions
+    def get_upper_lower(preds):
+        # 1. Take the preds from a number of randomly initialised models
+        # 2. Measure the std of the preds
+        std = tf.math.reduce_std(preds, axis=0)
+
+        # 3. Multiply the std by 1.96 (i.e. 95% confidence interval for normal distr)
+        interval = 1.96 * std
+
+        # 4. Get the pred interval upper and lower bounds
+        preds_mean = tf.reduce_mean(preds, axis=0)
+        lower, upper = preds_mean - interval, preds_mean + interval
+        return lower, upper
+
+    lower, upper = get_upper_lower(ensemble_preds)
+
+    # Plot the median of our ensemble preds along with the pred intervals
+    offset=500
+    plt.figure(figsize=(10,7))
+    plt.plot(X_test.index[offset:], y_test[offset:], "g", label="Test Data")
+    plt.plot(X_test.index[offset:], ensemble_median[offset:], "k-", label="Ensemble Median")
+    plt.xlabel("Date")
+    plt.ylabel("BTC Price")
+    # Plot bounds
+    plt.fill_between(X_test.index[offset:], (lower)[offset:], (upper)[offset:], label="Prediction Intervals")
+    plt.legend(loc="lower left")
+    plt.tight_layout()
+    plt.savefig("../models/8/model_8_predictions.png", bbox_inches="tight", dpi=250)
+
             
-
-
 def train_and_save_model(model_num):
     """ Trains, saves and evaluates a model """
 
@@ -501,7 +526,6 @@ def compare_model_performances(model_names=MODEL_NAMES):
 
 
 if __name__ == "__main__":
-    # model_8()
     train_all_models()
     compare_model_performances()
 
