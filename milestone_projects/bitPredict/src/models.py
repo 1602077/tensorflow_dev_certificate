@@ -19,7 +19,8 @@ MODEL_NAMES = [
     "5_LSTM",
     "6_Dense_Multivariate",
     "7_NBEATS",
-    "8_EnsembleModel"
+    "8_EnsembleModel",
+    "9_Future_Prediction"
 ]
 
 def model_0():
@@ -398,7 +399,6 @@ def make_ensemble_preds(ensemble_models, data):
     return tf.constant(tf.squeeze(ensemble_preds))
         
 
-
 def model_8():
     """ Training an ensembe model """
 
@@ -447,7 +447,68 @@ def model_8():
     plt.fill_between(X_test.index[offset:], (lower)[offset:], (upper)[offset:], label="Prediction Intervals")
     plt.legend(loc="lower left")
     plt.tight_layout()
-    plt.savefig("../models/8/model_8_predictions.png", bbox_inches="tight", dpi=250)
+    return plt.savefig("../models/8/model_8_predictions.png", bbox_inches="tight", dpi=250)
+
+
+def model_9():
+    """ Future prediction model """
+    HORIZON, WINDOW_SIZE = 1, 7
+    data, X_all, y_all, prices = create_future_dataset()
+    
+    tf.random.set_seed(42)
+
+    model_9 = tf.keras.Sequential([
+        layers.Dense(128, activation="relu"),
+        layers.Dense(128, activation="relu"),
+        layers.Dense(HORIZON)
+    ], name=MODEL_NAMES[9])
+
+    model_9.compile(loss="mae", optimizer="adam")
+
+    model_9.fit(data, epochs=100, verbose=2)
+
+    # Make predictions into the future
+    INTO_FUTURE = 14  # how many days in the future to predict?
+
+    def make_future_forecasts(values, model, into_future=INTO_FUTURE, window_size=WINDOW_SIZE) -> list:
+        """
+        Make future forecasts into_future steps after values ends.
+
+        Returns: future forecasts as a list of flaots.
+        """
+        future_forecast = []
+        last_window=values[-WINDOW_SIZE:]
+
+        for _ in range(INTO_FUTURE):
+            # Predict on the last window then append it over and over 
+            # ( i.e eventually model will predict on its predictions)
+            future_pred = model.predict(tf.expand_dims(last_window, axis=0))
+            print(f"Prediction on:\n {last_window} -> Prediction: {tf.squeeze(future_pred).numpy()}\n")
+
+            future_forecast.append(tf.squeeze(future_pred).numpy())
+            last_window = np.append(last_window, future_pred)[-WINDOW_SIZE:]
+        return future_forecast
+
+    future_forecast = make_future_forecasts(values=y_all, model=model_9, into_future=INTO_FUTURE, window_size=WINDOW_SIZE)
+
+    def get_future_dates(start_date, into_future=INTO_FUTURE, offset=1):
+        """ Returns array of datetime values from start_date -> start_data + into_future """
+
+        start_date = start_date + np.timedelta64(offset, "D")
+        end_date = start_date + np.timedelta64(into_future, "D")
+        return np.arange(start_date, end_date, dtype="datetime64[D]")
+
+    last_timestep = prices.index[-1]
+    next_time_steps = get_future_dates(last_timestep)
+    next_time_steps = np.insert(next_time_steps, 0, last_timestep)
+    future_forecast = np.insert(future_forecast, 0, prices["Price"].to_numpy()[-1])
+
+    plt.figure(figsize=(10,7))
+    plot_time_series(prices.index, prices["Price"].to_numpy(), start=2500, format="-", label="Actual BTC Price")
+    plot_time_series(next_time_steps, future_forecast, format="-", label="Predicted BTC Price")
+    plt.savefig("../models/9/futurePredictions.png", bbox_inches="tight", dpi=250)
+
+    return
 
             
 def train_and_save_model(model_num):
@@ -492,12 +553,15 @@ def train_all_models():
     train_and_save_model(6)
     train_and_save_model(7)
     train_and_save_model(8)
+    train_and_save_model(9)
+
     return
 
 
-def compare_model_performances(model_names=MODEL_NAMES):
+def compare_model_performances(model_names=MODEL_NAMES[:-1]):
     """
-    Collate model_performances from log files into a pandas dataframe  
+    Collate model_performances from log files into a pandas dataframe,
+    all expect final model (model 9), which predicts the future price.
     """
     df = pd.DataFrame()  # Empty df to store model metrics in
 

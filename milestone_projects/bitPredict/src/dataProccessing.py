@@ -296,7 +296,7 @@ def create_future_dataset(filename="BTC_USD_2013-10-01_2021-05-18-CoinDesk.csv",
     BATCH_SIZE = 1024
     dataset_all = tf.data.Dataset.zip((features_dataset_all, labels_dataset_all))
     dataset_all = dataset_all.batch(BATCH_SIZE).prefetch(tf.data.AUTOTUNE)
-    return dataset_all
+    return dataset_all, X_all, y_all, df
 
 
 if __name__ == "__main__":
