@@ -248,13 +248,65 @@ def make_preds(model, input_data):
     return tf.squeeze(model.predict(input_data))
 
 
-if __name__ == "__main__":
-    filename = "BTC_USD_2013-10-01_2021-05-18-CoinDesk.csv"
-    nbeats_data_pipeline()
-    create_train_test_datasets(filename=filename,
+def create_future_dataset(filename="BTC_USD_2013-10-01_2021-05-18-CoinDesk.csv",
                                 test_split=0.2,
                                 window=False,
                                 horizon=1,
                                 window_size=7,
-                                block_reward=True)
+                                ):
+
+    """ Pipeline to create dataset to predict on the future """
+
+    df = pd.read_csv(f"../data/{filename}", parse_dates=["Date"], index_col=["Date"])
+    df = pd.DataFrame(df["Closing Price (USD)"]).rename(columns={"Closing Price (USD)": "Price"})
+
+    timesteps = df.index.to_numpy()
+    prices = df["Price"].to_numpy()
+    
+
+    block_reward_1 = 50 # 3rd Jan 2009 i.e. not in our dataset
+    block_reward_2 = 25 # 8th Nov 2012
+    block_reward_3 = 12.5 # 9th Jul 2016
+    block_reward_4 = 6.25 # 18 May 2020
+
+    block_reward_2_datetime = np.datetime64("2012-11-28")
+    block_reward_3_datetime = np.datetime64("2016-07-09")
+    block_reward_4_datetime = np.datetime64("2020-05-18")
+
+    block_reward_2_days = (block_reward_3_datetime - df.index[0]).days
+    block_reward_3_days = (block_reward_4_datetime - df.index[0]).days
+
+    prices_block = df.copy()
+    prices_block["block_reward"] = None
+    prices_block.iloc[:block_reward_2_days, -1] = block_reward_2
+    prices_block.iloc[block_reward_2_days:block_reward_3_days, -1] = block_reward_3
+    prices_block.iloc[block_reward_3_days:, -1] = block_reward_4
+
+    # Make window dataset using pandas (univariate time series helper funcs will not longer work)
+    bitcoin_prices_windowed = prices_block.copy()
+    for i in range(window_size):  # Add windowed columns
+        bitcoin_prices_windowed[f"Price+{i+1}"] = bitcoin_prices_windowed["Price"].shift(periods=i+1)
+
+    X_all = bitcoin_prices_windowed.dropna().drop(["Price", "block_reward"], axis=1).to_numpy()
+    y_all = bitcoin_prices_windowed.dropna()["Price"].to_numpy()
+
+    features_dataset_all = tf.data.Dataset.from_tensor_slices(X_all)
+    labels_dataset_all = tf.data.Dataset.from_tensor_slices(y_all)
+
+    BATCH_SIZE = 1024
+    dataset_all = tf.data.Dataset.zip((features_dataset_all, labels_dataset_all))
+    dataset_all = dataset_all.batch(BATCH_SIZE).prefetch(tf.data.AUTOTUNE)
+    return dataset_all
+
+
+if __name__ == "__main__":
+    create_future_dataset()
+    # filename = "BTC_USD_2013-10-01_2021-05-18-CoinDesk.csv"
+    # nbeats_data_pipeline()
+    # create_train_test_datasets(filename=filename,
+    #                             test_split=0.2,
+    #                             window=False,
+    #                             horizon=1,
+    #                             window_size=7,
+    #                             block_reward=True)
 
