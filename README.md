@@ -52,3 +52,5 @@ Models:
 - Multivariate Dense.
 - NBEATS Algorithm.
 - Ensemble Model (Series of Dense models using NBEATS data pipeline).
+
+[Certificate of Course Completion](https://pwcanalytics.udemy.com/certificate/UC-7c596c9d-505b-44ff-abf8-f46ee10c8877/)
