@@ -21,7 +21,7 @@ Models:
 
 ## 2. SkimLit
 
-Dataset: (PudMed RCT))[https://github.com/Franck-Dernoncourt/pubmed-rct.git]
+Dataset: [PudMed RCT](https://github.com/Franck-Dernoncourt/pubmed-rct.git)
 
 ETL:
 - Preprocess each abstract and append into a dataframe with a line per sentennce in abstract & relevant metadata (line number, total number of lines & classification (e.g. objective, method, conclusion etc))).
@@ -39,7 +39,7 @@ Models:
 
 ## 3. BitPredict
 
-Dataset: (BTC data)[https://raw.githubusercontent.com/mrdbourke/tensorflow-deep-learning/main/extras/BTC_USD_2013-10-01_2021-05-18-CoinDesk.csv]
+Dataset: [BTC data](https://raw.githubusercontent.com/mrdbourke/tensorflow-deep-learning/main/extras/BTC_USD_2013-10-01_2021-05-18-CoinDesk.csv)
 
 Models:
 - Niave-Bayes Classifier.
